@@ -1,8 +1,7 @@
 "use client"
 
 import type React from "react"
-
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import { QRCodeSVG } from "qrcode.react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -12,11 +11,26 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Slider } from "@/components/ui/slider"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Textarea } from "@/components/ui/textarea"
-import { Download, Upload, Link, Type, Mail, MessageSquare, Wifi, Contact } from "lucide-react"
+import { Download, Upload, Link2, FileText, Mail, MessageSquare, Wifi, User } from "lucide-react"
 
 type QRType = "url" | "text" | "email" | "sms" | "wifi" | "vcard"
 
 export default function QRCodeGeneratorEN() {
+  const [theme, setTheme] = useState<"light" | "dark">("light")
+
+  useEffect(() => {
+    const savedTheme = (localStorage.getItem("theme") as "light" | "dark") || "light"
+    setTheme(savedTheme)
+    document.documentElement.classList.toggle("dark", savedTheme === "dark")
+  }, [])
+
+  const toggleTheme = () => {
+    const newTheme = theme === "light" ? "dark" : "light"
+    setTheme(newTheme)
+    localStorage.setItem("theme", newTheme)
+    document.documentElement.classList.toggle("dark", newTheme === "dark")
+  }
+
   const [qrType, setQRType] = useState<QRType>("url")
   const [qrData, setQRData] = useState("https://ahoikapptn.com")
   const [color, setColor] = useState("#6366f1")
@@ -173,17 +187,42 @@ END:VCARD`
   }
 
   const tabIcons = {
-    url: <Link className="w-4 h-4" />,
-    text: <Type className="w-4 h-4" />,
+    url: <Link2 className="w-4 h-4" />,
+    text: <FileText className="w-4 h-4" />,
     email: <Mail className="w-4 h-4" />,
     sms: <MessageSquare className="w-4 h-4" />,
     wifi: <Wifi className="w-4 h-4" />,
-    vcard: <Contact className="w-4 h-4" />,
+    vcard: <User className="w-4 h-4" />,
   }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-muted to-accent/10 p-4 md:p-8">
       <div className="fixed top-4 right-4 z-50 flex gap-2">
+        <button
+          onClick={toggleTheme}
+          className="w-10 h-10 rounded-full bg-card shadow-lg hover:scale-110 transition-transform border-2 border-border flex items-center justify-center"
+          title={theme === "light" ? "Dark mode" : "Light mode"}
+        >
+          {theme === "light" ? (
+            <svg className="w-5 h-5 text-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+              />
+            </svg>
+          ) : (
+            <svg className="w-5 h-5 text-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+              />
+            </svg>
+          )}
+        </button>
         <a
           href="/"
           className="w-10 h-10 rounded-full overflow-hidden shadow-lg hover:scale-110 transition-transform border-2 border-white"

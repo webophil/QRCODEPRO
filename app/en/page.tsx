@@ -16,7 +16,7 @@ import { Download, Upload, Link, Type, Mail, MessageSquare, Wifi, Contact } from
 
 type QRType = "url" | "text" | "email" | "sms" | "wifi" | "vcard"
 
-export default function QRCodeGenerator() {
+export default function QRCodeGeneratorEN() {
   const [qrType, setQRType] = useState<QRType>("url")
   const [qrData, setQRData] = useState("https://ahoikapptn.com")
   const [color, setColor] = useState("#6366f1")
@@ -203,10 +203,10 @@ END:VCARD`
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-8">
           <h1 className="text-5xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-            Générateur Pro QR Code
+            Professional QR Code Generator
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            QR codes personnalisés pour tous vos besoins professionnels et personnels
+            Custom QR codes for all your professional and personal needs
           </p>
         </div>
 
@@ -219,7 +219,7 @@ END:VCARD`
               <CardContent className="p-6">
                 <form onSubmit={handleGenerate} className="space-y-6">
                   <div>
-                    <Label className="text-base font-semibold text-foreground mb-3 block">Type de contenu</Label>
+                    <Label className="text-base font-semibold text-foreground mb-3 block">Content Type</Label>
                     <Tabs value={qrType} onValueChange={(value) => setQRType(value as QRType)} className="w-full">
                       <TabsList className="grid grid-cols-3 gap-2 bg-muted p-1 h-auto">
                         <TabsTrigger
@@ -234,7 +234,7 @@ END:VCARD`
                           className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
                         >
                           {tabIcons.text}
-                          <span className="hidden sm:inline">Texte</span>
+                          <span className="hidden sm:inline">Text</span>
                         </TabsTrigger>
                         <TabsTrigger
                           value="email"
@@ -286,11 +286,11 @@ END:VCARD`
                       <TabsContent value="text" className="space-y-4 mt-4">
                         <div>
                           <Label htmlFor="text" className="text-foreground">
-                            Texte
+                            Text
                           </Label>
                           <Textarea
                             id="text"
-                            placeholder="Entrez votre texte ici..."
+                            placeholder="Enter your text here..."
                             value={textValue}
                             onChange={(e) => setTextValue(e.target.value)}
                             required
@@ -303,7 +303,7 @@ END:VCARD`
                       <TabsContent value="email" className="space-y-4 mt-4">
                         <div>
                           <Label htmlFor="emailAddress" className="text-foreground">
-                            Adresse email
+                            Email Address
                           </Label>
                           <Input
                             id="emailAddress"
@@ -317,11 +317,11 @@ END:VCARD`
                         </div>
                         <div>
                           <Label htmlFor="emailSubject" className="text-foreground">
-                            Sujet
+                            Subject
                           </Label>
                           <Input
                             id="emailSubject"
-                            placeholder="Objet de l'email"
+                            placeholder="Email subject"
                             value={email.subject}
                             onChange={(e) => setEmail({ ...email, subject: e.target.value })}
                             className="mt-2"
@@ -333,7 +333,7 @@ END:VCARD`
                           </Label>
                           <Textarea
                             id="emailBody"
-                            placeholder="Corps du message"
+                            placeholder="Message body"
                             value={email.body}
                             onChange={(e) => setEmail({ ...email, body: e.target.value })}
                             rows={3}
@@ -345,12 +345,12 @@ END:VCARD`
                       <TabsContent value="sms" className="space-y-4 mt-4">
                         <div>
                           <Label htmlFor="smsPhone" className="text-foreground">
-                            Numéro de téléphone
+                            Phone Number
                           </Label>
                           <Input
                             id="smsPhone"
                             type="tel"
-                            placeholder="+33612345678"
+                            placeholder="+1234567890"
                             value={sms.phone}
                             onChange={(e) => setSms({ ...sms, phone: e.target.value })}
                             required
@@ -363,7 +363,7 @@ END:VCARD`
                           </Label>
                           <Textarea
                             id="smsMessage"
-                            placeholder="Votre message"
+                            placeholder="Your message"
                             value={sms.message}
                             onChange={(e) => setSms({ ...sms, message: e.target.value })}
                             rows={3}
@@ -375,11 +375,11 @@ END:VCARD`
                       <TabsContent value="wifi" className="space-y-4 mt-4">
                         <div>
                           <Label htmlFor="wifiSsid" className="text-foreground">
-                            Nom du réseau (SSID)
+                            Network Name (SSID)
                           </Label>
                           <Input
                             id="wifiSsid"
-                            placeholder="MonWiFi"
+                            placeholder="MyWiFi"
                             value={wifi.ssid}
                             onChange={(e) => setWifi({ ...wifi, ssid: e.target.value })}
                             required
@@ -388,7 +388,7 @@ END:VCARD`
                         </div>
                         <div>
                           <Label htmlFor="wifiPassword" className="text-foreground">
-                            Mot de passe
+                            Password
                           </Label>
                           <Input
                             id="wifiPassword"
@@ -401,7 +401,7 @@ END:VCARD`
                         </div>
                         <div>
                           <Label htmlFor="wifiEncryption" className="text-foreground">
-                            Type de sécurité
+                            Security Type
                           </Label>
                           <Select
                             value={wifi.encryption}
@@ -413,7 +413,7 @@ END:VCARD`
                             <SelectContent>
                               <SelectItem value="WPA">WPA/WPA2</SelectItem>
                               <SelectItem value="WEP">WEP</SelectItem>
-                              <SelectItem value="nopass">Aucune</SelectItem>
+                              <SelectItem value="nopass">None</SelectItem>
                             </SelectContent>
                           </Select>
                         </div>
@@ -423,11 +423,11 @@ END:VCARD`
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                           <div>
                             <Label htmlFor="vcardFirstName" className="text-foreground">
-                              Prénom
+                              First Name
                             </Label>
                             <Input
                               id="vcardFirstName"
-                              placeholder="Jean"
+                              placeholder="John"
                               value={vcard.firstName}
                               onChange={(e) => setVcard({ ...vcard, firstName: e.target.value })}
                               required
@@ -436,11 +436,11 @@ END:VCARD`
                           </div>
                           <div>
                             <Label htmlFor="vcardLastName" className="text-foreground">
-                              Nom
+                              Last Name
                             </Label>
                             <Input
                               id="vcardLastName"
-                              placeholder="Dupont"
+                              placeholder="Doe"
                               value={vcard.lastName}
                               onChange={(e) => setVcard({ ...vcard, lastName: e.target.value })}
                               required
@@ -450,12 +450,12 @@ END:VCARD`
                         </div>
                         <div>
                           <Label htmlFor="vcardPhone" className="text-foreground">
-                            Téléphone
+                            Phone
                           </Label>
                           <Input
                             id="vcardPhone"
                             type="tel"
-                            placeholder="+33612345678"
+                            placeholder="+1234567890"
                             value={vcard.phone}
                             onChange={(e) => setVcard({ ...vcard, phone: e.target.value })}
                             className="mt-2"
@@ -468,7 +468,7 @@ END:VCARD`
                           <Input
                             id="vcardEmail"
                             type="email"
-                            placeholder="jean.dupont@example.com"
+                            placeholder="john.doe@example.com"
                             value={vcard.email}
                             onChange={(e) => setVcard({ ...vcard, email: e.target.value })}
                             className="mt-2"
@@ -476,11 +476,11 @@ END:VCARD`
                         </div>
                         <div>
                           <Label htmlFor="vcardOrganization" className="text-foreground">
-                            Organisation
+                            Organization
                           </Label>
                           <Input
                             id="vcardOrganization"
-                            placeholder="Nom de l'entreprise"
+                            placeholder="Company name"
                             value={vcard.organization}
                             onChange={(e) => setVcard({ ...vcard, organization: e.target.value })}
                             className="mt-2"
@@ -488,7 +488,7 @@ END:VCARD`
                         </div>
                         <div>
                           <Label htmlFor="vcardUrl" className="text-foreground">
-                            Site web
+                            Website
                           </Label>
                           <Input
                             id="vcardUrl"
@@ -508,7 +508,7 @@ END:VCARD`
                     className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold"
                     size="lg"
                   >
-                    Générer le QR Code
+                    Generate QR Code
                   </Button>
                 </form>
               </CardContent>
@@ -517,22 +517,22 @@ END:VCARD`
             <Card className="shadow-2xl border-0 bg-gradient-to-br from-secondary to-accent p-1">
               <div className="bg-card rounded-lg">
                 <CardHeader className="border-b bg-muted/50">
-                  <CardTitle className="text-2xl font-bold text-foreground">Personnalisation</CardTitle>
+                  <CardTitle className="text-2xl font-bold text-foreground">Customization</CardTitle>
                 </CardHeader>
                 <CardContent className="p-6 space-y-6">
                   <Tabs defaultValue="colors" className="w-full">
                     <TabsList className="grid w-full grid-cols-4 mb-6">
-                      <TabsTrigger value="colors">Couleurs</TabsTrigger>
-                      <TabsTrigger value="style">Style et Taille</TabsTrigger>
+                      <TabsTrigger value="colors">Colors</TabsTrigger>
+                      <TabsTrigger value="style">Style & Size</TabsTrigger>
                       <TabsTrigger value="logo">Logo</TabsTrigger>
-                      <TabsTrigger value="error">Correction</TabsTrigger>
+                      <TabsTrigger value="error">Error Correction</TabsTrigger>
                     </TabsList>
 
                     <TabsContent value="colors" className="space-y-6">
                       <div className="grid grid-cols-2 gap-4">
                         <div>
                           <Label htmlFor="color" className="text-foreground font-semibold">
-                            Couleur QR
+                            QR Color
                           </Label>
                           <div className="flex gap-2 items-center mt-2">
                             <Input
@@ -552,7 +552,7 @@ END:VCARD`
                         </div>
                         <div>
                           <Label htmlFor="backgroundColor" className="text-foreground font-semibold">
-                            Couleur fond
+                            Background Color
                           </Label>
                           <div className="flex gap-2 items-center mt-2">
                             <Input
@@ -576,7 +576,7 @@ END:VCARD`
                     <TabsContent value="style" className="space-y-6">
                       <div>
                         <Label htmlFor="cornerStyle" className="text-foreground font-semibold">
-                          Style des coins
+                          Corner Style
                         </Label>
                         <Select
                           value={cornerStyle}
@@ -586,15 +586,15 @@ END:VCARD`
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="square">Carrés classiques</SelectItem>
-                            <SelectItem value="rounded">Coins arrondis</SelectItem>
+                            <SelectItem value="square">Classic Square</SelectItem>
+                            <SelectItem value="rounded">Rounded Corners</SelectItem>
                           </SelectContent>
                         </Select>
                       </div>
 
                       <div>
                         <Label htmlFor="size" className="text-foreground font-semibold">
-                          Taille: {size}x{size}px
+                          Size: {size}x{size}px
                         </Label>
                         <Slider
                           id="size"
@@ -611,7 +611,7 @@ END:VCARD`
                     <TabsContent value="logo" className="space-y-6">
                       <div>
                         <Label htmlFor="logo" className="text-foreground font-semibold">
-                          Logo (optionnel)
+                          Logo (optional)
                         </Label>
                         <div className="flex gap-2 mt-3">
                           <Input
@@ -629,7 +629,7 @@ END:VCARD`
                             className="flex-1 border-2 border-dashed border-muted-foreground/30 hover:border-primary hover:bg-primary/10"
                           >
                             <Upload className="w-4 h-4 mr-2" />
-                            {logo ? "Changer" : "Ajouter"}
+                            {logo ? "Change" : "Add"}
                           </Button>
                           {logo && (
                             <Button
@@ -638,14 +638,14 @@ END:VCARD`
                               onClick={() => setLogo(null)}
                               className="bg-destructive hover:bg-destructive/90"
                             >
-                              Supprimer
+                              Remove
                             </Button>
                           )}
                         </div>
                         {logo && (
                           <div className="mt-4">
                             <Label htmlFor="logoSize" className="text-foreground font-semibold">
-                              Taille du logo: {logoSize}%
+                              Logo Size: {logoSize}%
                             </Label>
                             <Slider
                               id="logoSize"
@@ -664,7 +664,7 @@ END:VCARD`
                     <TabsContent value="error" className="space-y-6">
                       <div>
                         <Label htmlFor="errorCorrection" className="text-foreground font-semibold">
-                          Niveau de correction d'erreur
+                          Error Correction Level
                         </Label>
                         <Select
                           value={errorCorrection}
@@ -674,14 +674,14 @@ END:VCARD`
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="L">Faible (7%)</SelectItem>
-                            <SelectItem value="M">Moyen (15%)</SelectItem>
+                            <SelectItem value="L">Low (7%)</SelectItem>
+                            <SelectItem value="M">Medium (15%)</SelectItem>
                             <SelectItem value="Q">Quartile (25%)</SelectItem>
-                            <SelectItem value="H">Élevé (30%)</SelectItem>
+                            <SelectItem value="H">High (30%)</SelectItem>
                           </SelectContent>
                         </Select>
                         <p className="text-sm text-muted-foreground mt-2">
-                          Un niveau plus élevé permet au QR code de rester lisible même partiellement endommagé
+                          Higher levels allow the QR code to remain readable even if partially damaged
                         </p>
                       </div>
                     </TabsContent>
@@ -695,7 +695,7 @@ END:VCARD`
             <Card className="shadow-2xl border-0 bg-gradient-to-br from-primary to-secondary p-1">
               <div className="bg-card rounded-lg">
                 <CardHeader className="border-b bg-muted/50">
-                  <CardTitle className="text-2xl font-bold text-foreground">Aperçu</CardTitle>
+                  <CardTitle className="text-2xl font-bold text-foreground">Preview</CardTitle>
                 </CardHeader>
                 <CardContent className="p-8">
                   {qrData && (
@@ -751,7 +751,7 @@ END:VCARD`
                         size="lg"
                       >
                         <Download className="w-5 h-5 mr-2" />
-                        Télécharger en PNG
+                        Download as PNG
                       </Button>
                     </div>
                   )}

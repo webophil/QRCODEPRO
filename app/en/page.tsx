@@ -262,482 +262,482 @@ END:VCARD`
       <div className="max-w-7xl mx-auto">
         <div className="grid lg:grid-cols-2 gap-6">
           <div className="space-y-6">
-            <Card className="shadow-xl border-0 bg-card/80 backdrop-blur">
-              <CardHeader className="border-b bg-muted/50">
-                <CardTitle className="text-2xl font-bold text-foreground">Configuration</CardTitle>
-              </CardHeader>
-              <CardContent className="p-6">
-                <form onSubmit={handleGenerate} className="space-y-6">
-                  <div>
-                    <Label className="text-base font-semibold text-foreground mb-3 block">Content Type</Label>
-                    <Tabs value={qrType} onValueChange={(value) => setQRType(value as QRType)} className="w-full">
-                      <TabsList className="grid grid-cols-3 gap-2 bg-muted p-1 h-auto">
-                        <TabsTrigger
-                          value="url"
-                          className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-                        >
-                          {tabIcons.url}
-                          <span className="hidden sm:inline">URL</span>
-                        </TabsTrigger>
-                        <TabsTrigger
-                          value="text"
-                          className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-                        >
-                          {tabIcons.text}
-                          <span className="hidden sm:inline">Text</span>
-                        </TabsTrigger>
-                        <TabsTrigger
-                          value="email"
-                          className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-                        >
-                          {tabIcons.email}
-                          <span className="hidden sm:inline">Email</span>
-                        </TabsTrigger>
-                        <TabsTrigger
-                          value="sms"
-                          className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-                        >
-                          {tabIcons.sms}
-                          <span className="hidden sm:inline">SMS</span>
-                        </TabsTrigger>
-                        <TabsTrigger
-                          value="wifi"
-                          className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-                        >
-                          {tabIcons.wifi}
-                          <span className="hidden sm:inline">Wi-Fi</span>
-                        </TabsTrigger>
-                        <TabsTrigger
-                          value="vcard"
-                          className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
-                        >
-                          {tabIcons.vcard}
-                          <span className="hidden sm:inline">vCard</span>
-                        </TabsTrigger>
-                      </TabsList>
-
-                      <TabsContent value="url" className="space-y-4 mt-4">
-                        <div>
-                          <Label htmlFor="url" className="text-foreground">
-                            URL
-                          </Label>
-                          <Input
-                            id="url"
-                            type="url"
-                            placeholder="https://example.com"
-                            value={urlValue}
-                            onChange={(e) => setUrlValue(e.target.value)}
-                            required
-                            className="mt-2"
-                          />
-                        </div>
-                      </TabsContent>
-
-                      <TabsContent value="text" className="space-y-4 mt-4">
-                        <div>
-                          <Label htmlFor="text" className="text-foreground">
-                            Text
-                          </Label>
-                          <Textarea
-                            id="text"
-                            placeholder="Enter your text here..."
-                            value={textValue}
-                            onChange={(e) => setTextValue(e.target.value)}
-                            required
-                            rows={4}
-                            className="mt-2"
-                          />
-                        </div>
-                      </TabsContent>
-
-                      <TabsContent value="email" className="space-y-4 mt-4">
-                        <div>
-                          <Label htmlFor="emailAddress" className="text-foreground">
-                            Email Address
-                          </Label>
-                          <Input
-                            id="emailAddress"
-                            type="email"
-                            placeholder="contact@example.com"
-                            value={email.address}
-                            onChange={(e) => setEmail({ ...email, address: e.target.value })}
-                            required
-                            className="mt-2"
-                          />
-                        </div>
-                        <div>
-                          <Label htmlFor="emailSubject" className="text-foreground">
-                            Subject
-                          </Label>
-                          <Input
-                            id="emailSubject"
-                            placeholder="Email subject"
-                            value={email.subject}
-                            onChange={(e) => setEmail({ ...email, subject: e.target.value })}
-                            className="mt-2"
-                          />
-                        </div>
-                        <div>
-                          <Label htmlFor="emailBody" className="text-foreground">
-                            Message
-                          </Label>
-                          <Textarea
-                            id="emailBody"
-                            placeholder="Message body"
-                            value={email.body}
-                            onChange={(e) => setEmail({ ...email, body: e.target.value })}
-                            rows={3}
-                            className="mt-2"
-                          />
-                        </div>
-                      </TabsContent>
-
-                      <TabsContent value="sms" className="space-y-4 mt-4">
-                        <div>
-                          <Label htmlFor="smsPhone" className="text-foreground">
-                            Phone Number
-                          </Label>
-                          <Input
-                            id="smsPhone"
-                            type="tel"
-                            placeholder="+1234567890"
-                            value={sms.phone}
-                            onChange={(e) => setSms({ ...sms, phone: e.target.value })}
-                            required
-                            className="mt-2"
-                          />
-                        </div>
-                        <div>
-                          <Label htmlFor="smsMessage" className="text-foreground">
-                            Message
-                          </Label>
-                          <Textarea
-                            id="smsMessage"
-                            placeholder="Your message"
-                            value={sms.message}
-                            onChange={(e) => setSms({ ...sms, message: e.target.value })}
-                            rows={3}
-                            className="mt-2"
-                          />
-                        </div>
-                      </TabsContent>
-
-                      <TabsContent value="wifi" className="space-y-4 mt-4">
-                        <div>
-                          <Label htmlFor="wifiSsid" className="text-foreground">
-                            Network Name (SSID)
-                          </Label>
-                          <Input
-                            id="wifiSsid"
-                            placeholder="MyWiFi"
-                            value={wifi.ssid}
-                            onChange={(e) => setWifi({ ...wifi, ssid: e.target.value })}
-                            required
-                            className="mt-2"
-                          />
-                        </div>
-                        <div>
-                          <Label htmlFor="wifiPassword" className="text-foreground">
-                            Password
-                          </Label>
-                          <Input
-                            id="wifiPassword"
-                            type="password"
-                            placeholder="••••••••"
-                            value={wifi.password}
-                            onChange={(e) => setWifi({ ...wifi, password: e.target.value })}
-                            className="mt-2"
-                          />
-                        </div>
-                        <div>
-                          <Label htmlFor="wifiEncryption" className="text-foreground">
-                            Security Type
-                          </Label>
-                          <Select
-                            value={wifi.encryption}
-                            onValueChange={(value) => setWifi({ ...wifi, encryption: value })}
-                          >
-                            <SelectTrigger id="wifiEncryption" className="mt-2">
-                              <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="WPA">WPA/WPA2</SelectItem>
-                              <SelectItem value="WEP">WEP</SelectItem>
-                              <SelectItem value="nopass">None</SelectItem>
-                            </SelectContent>
-                          </Select>
-                        </div>
-                      </TabsContent>
-
-                      <TabsContent value="vcard" className="space-y-4 mt-4">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                          <div>
-                            <Label htmlFor="vcardFirstName" className="text-foreground">
-                              First Name
-                            </Label>
-                            <Input
-                              id="vcardFirstName"
-                              placeholder="John"
-                              value={vcard.firstName}
-                              onChange={(e) => setVcard({ ...vcard, firstName: e.target.value })}
-                              required
-                              className="mt-2"
-                            />
-                          </div>
-                          <div>
-                            <Label htmlFor="vcardLastName" className="text-foreground">
-                              Last Name
-                            </Label>
-                            <Input
-                              id="vcardLastName"
-                              placeholder="Doe"
-                              value={vcard.lastName}
-                              onChange={(e) => setVcard({ ...vcard, lastName: e.target.value })}
-                              required
-                              className="mt-2"
-                            />
-                          </div>
-                        </div>
-                        <div>
-                          <Label htmlFor="vcardPhone" className="text-foreground">
-                            Phone
-                          </Label>
-                          <Input
-                            id="vcardPhone"
-                            type="tel"
-                            placeholder="+1234567890"
-                            value={vcard.phone}
-                            onChange={(e) => setVcard({ ...vcard, phone: e.target.value })}
-                            className="mt-2"
-                          />
-                        </div>
-                        <div>
-                          <Label htmlFor="vcardEmail" className="text-foreground">
-                            Email
-                          </Label>
-                          <Input
-                            id="vcardEmail"
-                            type="email"
-                            placeholder="john.doe@example.com"
-                            value={vcard.email}
-                            onChange={(e) => setVcard({ ...vcard, email: e.target.value })}
-                            className="mt-2"
-                          />
-                        </div>
-                        <div>
-                          <Label htmlFor="vcardOrganization" className="text-foreground">
-                            Organization
-                          </Label>
-                          <Input
-                            id="vcardOrganization"
-                            placeholder="Company name"
-                            value={vcard.organization}
-                            onChange={(e) => setVcard({ ...vcard, organization: e.target.value })}
-                            className="mt-2"
-                          />
-                        </div>
-                        <div>
-                          <Label htmlFor="vcardUrl" className="text-foreground">
-                            Website
-                          </Label>
-                          <Input
-                            id="vcardUrl"
-                            type="url"
-                            placeholder="https://example.com"
-                            value={vcard.url}
-                            onChange={(e) => setVcard({ ...vcard, url: e.target.value })}
-                            className="mt-2"
-                          />
-                        </div>
-                      </TabsContent>
-                    </Tabs>
-                  </div>
-
-                  <Button
-                    type="submit"
-                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold"
-                    size="lg"
-                  >
-                    Generate QR Code
-                  </Button>
-                </form>
-              </CardContent>
-            </Card>
-
-            <Card className="shadow-2xl border-0 bg-gradient-to-br from-secondary to-accent p-1">
+            <Card className="shadow-2xl border-0 bg-gradient-to-br from-primary to-secondary p-1">
               <div className="bg-card rounded-lg">
                 <CardHeader className="border-b bg-muted/50">
-                  <CardTitle className="text-2xl font-bold text-foreground">Customization</CardTitle>
+                  <CardTitle className="text-2xl font-bold text-foreground">Configuration</CardTitle>
                 </CardHeader>
-                <CardContent className="p-6 space-y-6">
-                  <Tabs defaultValue="colors" className="w-full">
-                    <TabsList className="grid w-full grid-cols-4 mb-6">
-                      <TabsTrigger value="colors">Colors</TabsTrigger>
-                      <TabsTrigger value="style">Style & Size</TabsTrigger>
-                      <TabsTrigger value="logo">Logo</TabsTrigger>
-                      <TabsTrigger value="error">Error Correction</TabsTrigger>
-                    </TabsList>
-
-                    <TabsContent value="colors" className="space-y-6">
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <Label htmlFor="color" className="text-foreground font-semibold">
-                            QR Color
-                          </Label>
-                          <div className="flex gap-2 items-center mt-2">
-                            <Input
-                              id="color"
-                              type="color"
-                              value={color}
-                              onChange={(e) => setColor(e.target.value)}
-                              className="w-16 h-12 cursor-pointer"
-                            />
-                            <Input
-                              type="text"
-                              value={color}
-                              onChange={(e) => setColor(e.target.value)}
-                              className="flex-1 font-mono text-sm"
-                            />
-                          </div>
-                        </div>
-                        <div>
-                          <Label htmlFor="backgroundColor" className="text-foreground font-semibold">
-                            Background Color
-                          </Label>
-                          <div className="flex gap-2 items-center mt-2">
-                            <Input
-                              id="backgroundColor"
-                              type="color"
-                              value={backgroundColor}
-                              onChange={(e) => setBackgroundColor(e.target.value)}
-                              className="w-16 h-12 cursor-pointer"
-                            />
-                            <Input
-                              type="text"
-                              value={backgroundColor}
-                              onChange={(e) => setBackgroundColor(e.target.value)}
-                              className="flex-1 font-mono text-sm"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </TabsContent>
-
-                    <TabsContent value="style" className="space-y-6">
-                      <div>
-                        <Label htmlFor="cornerStyle" className="text-foreground font-semibold">
-                          Corner Style
-                        </Label>
-                        <Select
-                          value={cornerStyle}
-                          onValueChange={(value) => setCornerStyle(value as "square" | "rounded")}
-                        >
-                          <SelectTrigger id="cornerStyle" className="mt-2">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="square">Classic Square</SelectItem>
-                            <SelectItem value="rounded">Rounded Corners</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-
-                      <div>
-                        <Label htmlFor="size" className="text-foreground font-semibold">
-                          Size: {size}x{size}px
-                        </Label>
-                        <Slider
-                          id="size"
-                          min={128}
-                          max={512}
-                          step={16}
-                          value={[size]}
-                          onValueChange={(value) => setSize(value[0])}
-                          className="w-full mt-3"
-                        />
-                      </div>
-                    </TabsContent>
-
-                    <TabsContent value="logo" className="space-y-6">
-                      <div>
-                        <Label htmlFor="logo" className="text-foreground font-semibold">
-                          Logo (optional)
-                        </Label>
-                        <div className="flex gap-2 mt-3">
-                          <Input
-                            ref={fileInputRef}
-                            id="logo"
-                            type="file"
-                            accept="image/*"
-                            onChange={handleLogoUpload}
-                            className="hidden"
-                          />
-                          <Button
-                            type="button"
-                            variant="outline"
-                            onClick={() => fileInputRef.current?.click()}
-                            className="flex-1 border-2 border-dashed border-muted-foreground/30 hover:border-primary hover:bg-primary/10"
+                <CardContent className="p-6">
+                  <form onSubmit={handleGenerate} className="space-y-6">
+                    <div>
+                      <Label className="text-base font-semibold text-foreground mb-3 block">Content Type</Label>
+                      <Tabs value={qrType} onValueChange={(value) => setQRType(value as QRType)} className="w-full">
+                        <TabsList className="grid grid-cols-3 gap-2 bg-muted p-1 h-auto">
+                          <TabsTrigger
+                            value="url"
+                            className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
                           >
-                            <Upload className="w-4 h-4 mr-2" />
-                            {logo ? "Change" : "Add"}
-                          </Button>
-                          {logo && (
-                            <Button
-                              type="button"
-                              variant="destructive"
-                              onClick={() => setLogo(null)}
-                              className="bg-destructive hover:bg-destructive/90"
-                            >
-                              Remove
-                            </Button>
-                          )}
-                        </div>
-                        {logo && (
-                          <div className="mt-4">
-                            <Label htmlFor="logoSize" className="text-foreground font-semibold">
-                              Logo Size: {logoSize}%
+                            {tabIcons.url}
+                            <span className="hidden sm:inline">URL</span>
+                          </TabsTrigger>
+                          <TabsTrigger
+                            value="text"
+                            className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                          >
+                            {tabIcons.text}
+                            <span className="hidden sm:inline">Text</span>
+                          </TabsTrigger>
+                          <TabsTrigger
+                            value="email"
+                            className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                          >
+                            {tabIcons.email}
+                            <span className="hidden sm:inline">Email</span>
+                          </TabsTrigger>
+                          <TabsTrigger
+                            value="sms"
+                            className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                          >
+                            {tabIcons.sms}
+                            <span className="hidden sm:inline">SMS</span>
+                          </TabsTrigger>
+                          <TabsTrigger
+                            value="wifi"
+                            className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                          >
+                            {tabIcons.wifi}
+                            <span className="hidden sm:inline">Wi-Fi</span>
+                          </TabsTrigger>
+                          <TabsTrigger
+                            value="vcard"
+                            className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                          >
+                            {tabIcons.vcard}
+                            <span className="hidden sm:inline">vCard</span>
+                          </TabsTrigger>
+                        </TabsList>
+
+                        <TabsContent value="url" className="space-y-4 mt-4">
+                          <div>
+                            <Label htmlFor="url" className="text-foreground">
+                              URL
                             </Label>
-                            <Slider
-                              id="logoSize"
-                              min={10}
-                              max={40}
-                              step={1}
-                              value={[logoSize]}
-                              onValueChange={(value) => setLogoSize(value[0])}
-                              className="w-full mt-3"
+                            <Input
+                              id="url"
+                              type="url"
+                              placeholder="https://example.com"
+                              value={urlValue}
+                              onChange={(e) => setUrlValue(e.target.value)}
+                              required
+                              className="mt-2"
                             />
                           </div>
-                        )}
-                      </div>
-                    </TabsContent>
+                        </TabsContent>
 
-                    <TabsContent value="error" className="space-y-6">
-                      <div>
-                        <Label htmlFor="errorCorrection" className="text-foreground font-semibold">
-                          Error Correction Level
-                        </Label>
-                        <Select
-                          value={errorCorrection}
-                          onValueChange={(value) => setErrorCorrection(value as "L" | "M" | "Q" | "H")}
-                        >
-                          <SelectTrigger id="errorCorrection" className="mt-2">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="L">Low (7%)</SelectItem>
-                            <SelectItem value="M">Medium (15%)</SelectItem>
-                            <SelectItem value="Q">Quartile (25%)</SelectItem>
-                            <SelectItem value="H">High (30%)</SelectItem>
-                          </SelectContent>
-                        </Select>
-                        <p className="text-sm text-muted-foreground mt-2">
-                          Higher levels allow the QR code to remain readable even if partially damaged
-                        </p>
-                      </div>
-                    </TabsContent>
-                  </Tabs>
+                        <TabsContent value="text" className="space-y-4 mt-4">
+                          <div>
+                            <Label htmlFor="text" className="text-foreground">
+                              Text
+                            </Label>
+                            <Textarea
+                              id="text"
+                              placeholder="Enter your text here..."
+                              value={textValue}
+                              onChange={(e) => setTextValue(e.target.value)}
+                              required
+                              rows={4}
+                              className="mt-2"
+                            />
+                          </div>
+                        </TabsContent>
+
+                        <TabsContent value="email" className="space-y-4 mt-4">
+                          <div>
+                            <Label htmlFor="emailAddress" className="text-foreground">
+                              Email Address
+                            </Label>
+                            <Input
+                              id="emailAddress"
+                              type="email"
+                              placeholder="contact@example.com"
+                              value={email.address}
+                              onChange={(e) => setEmail({ ...email, address: e.target.value })}
+                              required
+                              className="mt-2"
+                            />
+                          </div>
+                          <div>
+                            <Label htmlFor="emailSubject" className="text-foreground">
+                              Subject
+                            </Label>
+                            <Input
+                              id="emailSubject"
+                              placeholder="Email subject"
+                              value={email.subject}
+                              onChange={(e) => setEmail({ ...email, subject: e.target.value })}
+                              className="mt-2"
+                            />
+                          </div>
+                          <div>
+                            <Label htmlFor="emailBody" className="text-foreground">
+                              Message
+                            </Label>
+                            <Textarea
+                              id="emailBody"
+                              placeholder="Message body"
+                              value={email.body}
+                              onChange={(e) => setEmail({ ...email, body: e.target.value })}
+                              rows={3}
+                              className="mt-2"
+                            />
+                          </div>
+                        </TabsContent>
+
+                        <TabsContent value="sms" className="space-y-4 mt-4">
+                          <div>
+                            <Label htmlFor="smsPhone" className="text-foreground">
+                              Phone Number
+                            </Label>
+                            <Input
+                              id="smsPhone"
+                              type="tel"
+                              placeholder="+1234567890"
+                              value={sms.phone}
+                              onChange={(e) => setSms({ ...sms, phone: e.target.value })}
+                              required
+                              className="mt-2"
+                            />
+                          </div>
+                          <div>
+                            <Label htmlFor="smsMessage" className="text-foreground">
+                              Message
+                            </Label>
+                            <Textarea
+                              id="smsMessage"
+                              placeholder="Your message"
+                              value={sms.message}
+                              onChange={(e) => setSms({ ...sms, message: e.target.value })}
+                              rows={3}
+                              className="mt-2"
+                            />
+                          </div>
+                        </TabsContent>
+
+                        <TabsContent value="wifi" className="space-y-4 mt-4">
+                          <div>
+                            <Label htmlFor="wifiSsid" className="text-foreground">
+                              Network Name (SSID)
+                            </Label>
+                            <Input
+                              id="wifiSsid"
+                              placeholder="MyWiFi"
+                              value={wifi.ssid}
+                              onChange={(e) => setWifi({ ...wifi, ssid: e.target.value })}
+                              required
+                              className="mt-2"
+                            />
+                          </div>
+                          <div>
+                            <Label htmlFor="wifiPassword" className="text-foreground">
+                              Password
+                            </Label>
+                            <Input
+                              id="wifiPassword"
+                              type="password"
+                              placeholder="••••••••"
+                              value={wifi.password}
+                              onChange={(e) => setWifi({ ...wifi, password: e.target.value })}
+                              className="mt-2"
+                            />
+                          </div>
+                          <div>
+                            <Label htmlFor="wifiEncryption" className="text-foreground">
+                              Security Type
+                            </Label>
+                            <Select
+                              value={wifi.encryption}
+                              onValueChange={(value) => setWifi({ ...wifi, encryption: value })}
+                            >
+                              <SelectTrigger id="wifiEncryption" className="mt-2">
+                                <SelectValue />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="WPA">WPA/WPA2</SelectItem>
+                                <SelectItem value="WEP">WEP</SelectItem>
+                                <SelectItem value="nopass">None</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </div>
+                        </TabsContent>
+
+                        <TabsContent value="vcard" className="space-y-4 mt-4">
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                              <Label htmlFor="vcardFirstName" className="text-foreground">
+                                First Name
+                              </Label>
+                              <Input
+                                id="vcardFirstName"
+                                placeholder="John"
+                                value={vcard.firstName}
+                                onChange={(e) => setVcard({ ...vcard, firstName: e.target.value })}
+                                required
+                                className="mt-2"
+                              />
+                            </div>
+                            <div>
+                              <Label htmlFor="vcardLastName" className="text-foreground">
+                                Last Name
+                              </Label>
+                              <Input
+                                id="vcardLastName"
+                                placeholder="Doe"
+                                value={vcard.lastName}
+                                onChange={(e) => setVcard({ ...vcard, lastName: e.target.value })}
+                                required
+                                className="mt-2"
+                              />
+                            </div>
+                          </div>
+                          <div>
+                            <Label htmlFor="vcardPhone" className="text-foreground">
+                              Phone
+                            </Label>
+                            <Input
+                              id="vcardPhone"
+                              type="tel"
+                              placeholder="+1234567890"
+                              value={vcard.phone}
+                              onChange={(e) => setVcard({ ...vcard, phone: e.target.value })}
+                              className="mt-2"
+                            />
+                          </div>
+                          <div>
+                            <Label htmlFor="vcardEmail" className="text-foreground">
+                              Email
+                            </Label>
+                            <Input
+                              id="vcardEmail"
+                              type="email"
+                              placeholder="john.doe@example.com"
+                              value={vcard.email}
+                              onChange={(e) => setVcard({ ...vcard, email: e.target.value })}
+                              className="mt-2"
+                            />
+                          </div>
+                          <div>
+                            <Label htmlFor="vcardOrganization" className="text-foreground">
+                              Organization
+                            </Label>
+                            <Input
+                              id="vcardOrganization"
+                              placeholder="Company name"
+                              value={vcard.organization}
+                              onChange={(e) => setVcard({ ...vcard, organization: e.target.value })}
+                              className="mt-2"
+                            />
+                          </div>
+                          <div>
+                            <Label htmlFor="vcardUrl" className="text-foreground">
+                              Website
+                            </Label>
+                            <Input
+                              id="vcardUrl"
+                              type="url"
+                              placeholder="https://example.com"
+                              value={vcard.url}
+                              onChange={(e) => setVcard({ ...vcard, url: e.target.value })}
+                              className="mt-2"
+                            />
+                          </div>
+                        </TabsContent>
+                      </Tabs>
+                    </div>
+
+                    <Button
+                      type="submit"
+                      className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold"
+                      size="lg"
+                    >
+                      Generate QR Code
+                    </Button>
+                  </form>
                 </CardContent>
               </div>
+            </Card>
+
+            <Card className="shadow-xl border-0 bg-card/80 backdrop-blur">
+              <CardHeader className="border-b bg-muted/50">
+                <CardTitle className="text-2xl font-bold text-foreground">Customization</CardTitle>
+              </CardHeader>
+              <CardContent className="p-6 space-y-6">
+                <Tabs defaultValue="colors" className="w-full">
+                  <TabsList className="grid w-full grid-cols-4 mb-6">
+                    <TabsTrigger value="colors">Colors</TabsTrigger>
+                    <TabsTrigger value="style">Style & Size</TabsTrigger>
+                    <TabsTrigger value="logo">Logo</TabsTrigger>
+                    <TabsTrigger value="error">Error Correction</TabsTrigger>
+                  </TabsList>
+
+                  <TabsContent value="colors" className="space-y-6">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <Label htmlFor="color" className="text-foreground font-semibold">
+                          QR Color
+                        </Label>
+                        <div className="flex gap-2 items-center mt-2">
+                          <Input
+                            id="color"
+                            type="color"
+                            value={color}
+                            onChange={(e) => setColor(e.target.value)}
+                            className="w-16 h-12 cursor-pointer"
+                          />
+                          <Input
+                            type="text"
+                            value={color}
+                            onChange={(e) => setColor(e.target.value)}
+                            className="flex-1 font-mono text-sm"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <Label htmlFor="backgroundColor" className="text-foreground font-semibold">
+                          Background Color
+                        </Label>
+                        <div className="flex gap-2 items-center mt-2">
+                          <Input
+                            id="backgroundColor"
+                            type="color"
+                            value={backgroundColor}
+                            onChange={(e) => setBackgroundColor(e.target.value)}
+                            className="w-16 h-12 cursor-pointer"
+                          />
+                          <Input
+                            type="text"
+                            value={backgroundColor}
+                            onChange={(e) => setBackgroundColor(e.target.value)}
+                            className="flex-1 font-mono text-sm"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="style" className="space-y-6">
+                    <div>
+                      <Label htmlFor="cornerStyle" className="text-foreground font-semibold">
+                        Corner Style
+                      </Label>
+                      <Select
+                        value={cornerStyle}
+                        onValueChange={(value) => setCornerStyle(value as "square" | "rounded")}
+                      >
+                        <SelectTrigger id="cornerStyle" className="mt-2">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="square">Classic Square</SelectItem>
+                          <SelectItem value="rounded">Rounded Corners</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div>
+                      <Label htmlFor="size" className="text-foreground font-semibold">
+                        Size: {size}x{size}px
+                      </Label>
+                      <Slider
+                        id="size"
+                        min={128}
+                        max={512}
+                        step={16}
+                        value={[size]}
+                        onValueChange={(value) => setSize(value[0])}
+                        className="w-full mt-3"
+                      />
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="logo" className="space-y-6">
+                    <div>
+                      <Label htmlFor="logo" className="text-foreground font-semibold">
+                        Logo (optional)
+                      </Label>
+                      <div className="flex gap-2 mt-3">
+                        <Input
+                          ref={fileInputRef}
+                          id="logo"
+                          type="file"
+                          accept="image/*"
+                          onChange={handleLogoUpload}
+                          className="hidden"
+                        />
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={() => fileInputRef.current?.click()}
+                          className="flex-1 border-2 border-dashed border-muted-foreground/30 hover:border-primary hover:bg-primary/10"
+                        >
+                          <Upload className="w-4 h-4 mr-2" />
+                          {logo ? "Change" : "Add"}
+                        </Button>
+                        {logo && (
+                          <Button
+                            type="button"
+                            variant="destructive"
+                            onClick={() => setLogo(null)}
+                            className="bg-destructive hover:bg-destructive/90"
+                          >
+                            Remove
+                          </Button>
+                        )}
+                      </div>
+                      {logo && (
+                        <div className="mt-4">
+                          <Label htmlFor="logoSize" className="text-foreground font-semibold">
+                            Logo Size: {logoSize}%
+                          </Label>
+                          <Slider
+                            id="logoSize"
+                            min={10}
+                            max={40}
+                            step={1}
+                            value={[logoSize]}
+                            onValueChange={(value) => setLogoSize(value[0])}
+                            className="w-full mt-3"
+                          />
+                        </div>
+                      )}
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="error" className="space-y-6">
+                    <div>
+                      <Label htmlFor="errorCorrection" className="text-foreground font-semibold">
+                        Error Correction Level
+                      </Label>
+                      <Select
+                        value={errorCorrection}
+                        onValueChange={(value) => setErrorCorrection(value as "L" | "M" | "Q" | "H")}
+                      >
+                        <SelectTrigger id="errorCorrection" className="mt-2">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="L">Low (7%)</SelectItem>
+                          <SelectItem value="M">Medium (15%)</SelectItem>
+                          <SelectItem value="Q">Quartile (25%)</SelectItem>
+                          <SelectItem value="H">High (30%)</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <p className="text-sm text-muted-foreground mt-2">
+                        Higher levels allow the QR code to remain readable even if partially damaged
+                      </p>
+                    </div>
+                  </TabsContent>
+                </Tabs>
+              </CardContent>
             </Card>
           </div>
 

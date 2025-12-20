@@ -250,7 +250,7 @@ END:VCARD`
 
           <div className="text-center">
             <h1 className="text-3xl md:text-4xl font-bold mb-1 bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-              Générateur Pro QR Code
+              Générateur QR Code
             </h1>
             <p className="text-sm md:text-base text-muted-foreground">
               QR codes personnalisés pour tous vos besoins professionnels et personnels

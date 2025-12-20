@@ -205,7 +205,7 @@ END:VCARD`
             {/* Logo on the left */}
             <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
               <div className="relative w-12 h-12 rounded-lg overflow-hidden shadow-md">
-                <Image src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/qr-logo-diQVcePU4gkDyugjoqH1CKaNC5J7SJ.png" alt="QR Pro Logo" width={48} height={48} className="object-cover" />
+                <Image src="/images/qr-logo.png" alt="QR Pro Logo" width={48} height={48} className="object-cover" />
               </div>
               <span className="font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent text-5xl">
                 QR Pro
@@ -265,7 +265,7 @@ END:VCARD`
             <div className="space-y-6">
               <Card className="shadow-2xl border-0 bg-gradient-to-br from-primary to-secondary p-1">
                 <div className="bg-card rounded-lg">
-                  <CardHeader className="border-b bg-muted/50">
+                  <CardHeader className="border-b bg-muted/50 py-2">
                     <CardTitle className="text-2xl font-bold text-foreground text-center">Configuration</CardTitle>
                   </CardHeader>
                   <CardContent className="p-6">
@@ -569,7 +569,7 @@ END:VCARD`
 
               <Card className="shadow-2xl border-0 bg-gradient-to-br from-secondary to-accent p-1">
                 <div className="bg-card rounded-lg">
-                  <CardHeader className="border-b bg-muted/50">
+                  <CardHeader className="border-b bg-muted/50 py-2">
                     <CardTitle className="text-2xl font-bold text-foreground text-center">Personnalisation</CardTitle>
                   </CardHeader>
                   <CardContent className="p-6 space-y-6">
@@ -747,7 +747,7 @@ END:VCARD`
             <div className="space-y-6">
               <Card className="shadow-2xl border-0 bg-gradient-to-br from-primary to-secondary p-1">
                 <div className="bg-card rounded-lg">
-                  <CardHeader className="border-b bg-muted/50">
+                  <CardHeader className="border-b bg-muted/50 py-2">
                     <CardTitle className="text-2xl font-bold text-foreground text-center">Aperçu</CardTitle>
                   </CardHeader>
                   <CardContent className="p-8">

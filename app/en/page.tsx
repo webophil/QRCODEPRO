@@ -264,7 +264,7 @@ END:VCARD`
           <div className="space-y-6">
             <Card className="shadow-2xl border-0 bg-gradient-to-br from-primary to-secondary p-1">
               <div className="bg-card rounded-lg">
-                <CardHeader className="border-b bg-muted/50">
+                <CardHeader className="border-b bg-muted/50 py-2">
                   <CardTitle className="text-2xl font-bold text-foreground text-center">Configuration</CardTitle>
                 </CardHeader>
                 <CardContent className="p-6">
@@ -568,8 +568,8 @@ END:VCARD`
 
             <div className="rounded-xl bg-gradient-to-br from-secondary to-accent p-1 shadow-xl">
               <Card className="shadow-xl border-0 bg-card/80 backdrop-blur">
-                <CardHeader className="border-b bg-muted/50 text-center leading-7">
-                  <CardTitle className="text-2xl font-bold text-foreground">Customization</CardTitle>
+                <CardHeader className="border-b bg-muted/50 py-2">
+                  <CardTitle className="text-2xl font-bold text-foreground text-center">Customization</CardTitle>
                 </CardHeader>
                 <CardContent className="p-6 space-y-6">
                   <Tabs defaultValue="colors" className="w-full">
@@ -746,7 +746,7 @@ END:VCARD`
           <div className="space-y-6">
             <Card className="shadow-2xl border-0 bg-gradient-to-br from-primary to-secondary p-1">
               <div className="bg-card rounded-lg">
-                <CardHeader className="border-b bg-muted/50">
+                <CardHeader className="border-b bg-muted/50 py-2">
                   <CardTitle className="text-2xl font-bold text-foreground text-center">Preview</CardTitle>
                 </CardHeader>
                 <CardContent className="p-8">

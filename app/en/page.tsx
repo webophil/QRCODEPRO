@@ -615,8 +615,8 @@ END:VCARD`
             </Card>
 
             <div className="rounded-xl bg-gradient-to-br from-secondary to-accent p-1 shadow-xl">
-              <Card className="shadow-xl border-0 bg-card/80 backdrop-blur overflow-hidden">
-                <CardHeader className="border-b bg-muted/50 py-2 m-0">
+              <Card className="shadow-xl border-0 bg-card/80 backdrop-blur overflow-hidden p-0">
+                <CardHeader className="border-b bg-muted/50 py-2">
                   <CardTitle className="text-2xl font-bold text-foreground text-center">Customization</CardTitle>
                 </CardHeader>
                 <CardContent className="p-6 space-y-6">

@@ -188,6 +188,54 @@ END:VCARD`
     img.src = "data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(svgData)))
   }
 
+  const downloadQRCodeSVG = () => {
+    if (!qrRef.current) return
+
+    const svg = qrRef.current.querySelector("svg")
+    if (!svg) return
+
+    const clonedSvg = svg.cloneNode(true) as SVGElement
+
+    // Apply rounded corners if needed
+    if (cornerStyle === "rounded") {
+      clonedSvg.setAttribute("style", "border-radius: 16px; overflow: hidden;")
+    }
+
+    // Add logo if present
+    if (logo) {
+      const actualLogoSize = size * (logoSize / 100)
+      const logoX = (size - actualLogoSize) / 2
+      const logoY = (size - actualLogoSize) / 2
+
+      // Create white background for logo
+      const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect")
+      rect.setAttribute("x", String(logoX - 5))
+      rect.setAttribute("y", String(logoY - 5))
+      rect.setAttribute("width", String(actualLogoSize + 10))
+      rect.setAttribute("height", String(actualLogoSize + 10))
+      rect.setAttribute("fill", "white")
+      clonedSvg.appendChild(rect)
+
+      // Add logo image
+      const image = document.createElementNS("http://www.w3.org/2000/svg", "image")
+      image.setAttribute("x", String(logoX))
+      image.setAttribute("y", String(logoY))
+      image.setAttribute("width", String(actualLogoSize))
+      image.setAttribute("height", String(actualLogoSize))
+      image.setAttribute("href", logo)
+      clonedSvg.appendChild(image)
+    }
+
+    const svgData = new XMLSerializer().serializeToString(clonedSvg)
+    const blob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement("a")
+    a.href = url
+    a.download = `qrcode-${qrType}.svg`
+    a.click()
+    URL.revokeObjectURL(url)
+  }
+
   const tabIcons = {
     url: <Link2 className="w-4 h-4" />,
     text: <FileText className="w-4 h-4" />,
@@ -804,6 +852,14 @@ END:VCARD`
                       >
                         <Download className="w-5 h-5 mr-2" />
                         Download as PNG
+                      </Button>
+                      <Button
+                        onClick={downloadQRCodeSVG}
+                        className="w-full bg-chart-2 hover:bg-chart-2/90 text-primary-foreground font-semibold"
+                        size="lg"
+                      >
+                        <Download className="w-5 h-5 mr-2" />
+                        Download as SVG
                       </Button>
                     </div>
                   )}

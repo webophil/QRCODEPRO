@@ -566,179 +566,181 @@ END:VCARD`
               </div>
             </Card>
 
-            <Card className="shadow-xl border-0 bg-card/80 backdrop-blur">
-              <CardHeader className="border-b bg-muted/50">
-                <CardTitle className="text-2xl font-bold text-foreground">Customization</CardTitle>
-              </CardHeader>
-              <CardContent className="p-6 space-y-6">
-                <Tabs defaultValue="colors" className="w-full">
-                  <TabsList className="grid w-full grid-cols-4 mb-6">
-                    <TabsTrigger value="colors">Colors</TabsTrigger>
-                    <TabsTrigger value="style">Style & Size</TabsTrigger>
-                    <TabsTrigger value="logo">Logo</TabsTrigger>
-                    <TabsTrigger value="error">Error Correction</TabsTrigger>
-                  </TabsList>
+            <div className="rounded-xl bg-gradient-to-br from-secondary to-accent p-1 shadow-xl">
+              <Card className="shadow-xl border-0 bg-card/80 backdrop-blur">
+                <CardHeader className="border-b bg-muted/50">
+                  <CardTitle className="text-2xl font-bold text-foreground">Customization</CardTitle>
+                </CardHeader>
+                <CardContent className="p-6 space-y-6">
+                  <Tabs defaultValue="colors" className="w-full">
+                    <TabsList className="grid w-full grid-cols-4 mb-6">
+                      <TabsTrigger value="colors">Colors</TabsTrigger>
+                      <TabsTrigger value="style">Style & Size</TabsTrigger>
+                      <TabsTrigger value="logo">Logo</TabsTrigger>
+                      <TabsTrigger value="error">Error Correction</TabsTrigger>
+                    </TabsList>
 
-                  <TabsContent value="colors" className="space-y-6">
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <Label htmlFor="color" className="text-foreground font-semibold">
-                          QR Color
-                        </Label>
-                        <div className="flex gap-2 items-center mt-2">
-                          <Input
-                            id="color"
-                            type="color"
-                            value={color}
-                            onChange={(e) => setColor(e.target.value)}
-                            className="w-16 h-12 cursor-pointer"
-                          />
-                          <Input
-                            type="text"
-                            value={color}
-                            onChange={(e) => setColor(e.target.value)}
-                            className="flex-1 font-mono text-sm"
-                          />
+                    <TabsContent value="colors" className="space-y-6">
+                      <div className="grid grid-cols-2 gap-4">
+                        <div>
+                          <Label htmlFor="color" className="text-foreground font-semibold">
+                            QR Color
+                          </Label>
+                          <div className="flex gap-2 items-center mt-2">
+                            <Input
+                              id="color"
+                              type="color"
+                              value={color}
+                              onChange={(e) => setColor(e.target.value)}
+                              className="w-16 h-12 cursor-pointer"
+                            />
+                            <Input
+                              type="text"
+                              value={color}
+                              onChange={(e) => setColor(e.target.value)}
+                              className="flex-1 font-mono text-sm"
+                            />
+                          </div>
+                        </div>
+                        <div>
+                          <Label htmlFor="backgroundColor" className="text-foreground font-semibold">
+                            Background Color
+                          </Label>
+                          <div className="flex gap-2 items-center mt-2">
+                            <Input
+                              id="backgroundColor"
+                              type="color"
+                              value={backgroundColor}
+                              onChange={(e) => setBackgroundColor(e.target.value)}
+                              className="w-16 h-12 cursor-pointer"
+                            />
+                            <Input
+                              type="text"
+                              value={backgroundColor}
+                              onChange={(e) => setBackgroundColor(e.target.value)}
+                              className="flex-1 font-mono text-sm"
+                            />
+                          </div>
                         </div>
                       </div>
+                    </TabsContent>
+
+                    <TabsContent value="style" className="space-y-6">
                       <div>
-                        <Label htmlFor="backgroundColor" className="text-foreground font-semibold">
-                          Background Color
+                        <Label htmlFor="cornerStyle" className="text-foreground font-semibold">
+                          Corner Style
                         </Label>
-                        <div className="flex gap-2 items-center mt-2">
-                          <Input
-                            id="backgroundColor"
-                            type="color"
-                            value={backgroundColor}
-                            onChange={(e) => setBackgroundColor(e.target.value)}
-                            className="w-16 h-12 cursor-pointer"
-                          />
-                          <Input
-                            type="text"
-                            value={backgroundColor}
-                            onChange={(e) => setBackgroundColor(e.target.value)}
-                            className="flex-1 font-mono text-sm"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </TabsContent>
-
-                  <TabsContent value="style" className="space-y-6">
-                    <div>
-                      <Label htmlFor="cornerStyle" className="text-foreground font-semibold">
-                        Corner Style
-                      </Label>
-                      <Select
-                        value={cornerStyle}
-                        onValueChange={(value) => setCornerStyle(value as "square" | "rounded")}
-                      >
-                        <SelectTrigger id="cornerStyle" className="mt-2">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="square">Classic Square</SelectItem>
-                          <SelectItem value="rounded">Rounded Corners</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-
-                    <div>
-                      <Label htmlFor="size" className="text-foreground font-semibold">
-                        Size: {size}x{size}px
-                      </Label>
-                      <Slider
-                        id="size"
-                        min={128}
-                        max={512}
-                        step={16}
-                        value={[size]}
-                        onValueChange={(value) => setSize(value[0])}
-                        className="w-full mt-3"
-                      />
-                    </div>
-                  </TabsContent>
-
-                  <TabsContent value="logo" className="space-y-6">
-                    <div>
-                      <Label htmlFor="logo" className="text-foreground font-semibold">
-                        Logo (optional)
-                      </Label>
-                      <div className="flex gap-2 mt-3">
-                        <Input
-                          ref={fileInputRef}
-                          id="logo"
-                          type="file"
-                          accept="image/*"
-                          onChange={handleLogoUpload}
-                          className="hidden"
-                        />
-                        <Button
-                          type="button"
-                          variant="outline"
-                          onClick={() => fileInputRef.current?.click()}
-                          className="flex-1 border-2 border-dashed border-muted-foreground/30 hover:border-primary hover:bg-primary/10"
+                        <Select
+                          value={cornerStyle}
+                          onValueChange={(value) => setCornerStyle(value as "square" | "rounded")}
                         >
-                          <Upload className="w-4 h-4 mr-2" />
-                          {logo ? "Change" : "Add"}
-                        </Button>
-                        {logo && (
+                          <SelectTrigger id="cornerStyle" className="mt-2">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="square">Classic Square</SelectItem>
+                            <SelectItem value="rounded">Rounded Corners</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+
+                      <div>
+                        <Label htmlFor="size" className="text-foreground font-semibold">
+                          Size: {size}x{size}px
+                        </Label>
+                        <Slider
+                          id="size"
+                          min={128}
+                          max={512}
+                          step={16}
+                          value={[size]}
+                          onValueChange={(value) => setSize(value[0])}
+                          className="w-full mt-3"
+                        />
+                      </div>
+                    </TabsContent>
+
+                    <TabsContent value="logo" className="space-y-6">
+                      <div>
+                        <Label htmlFor="logo" className="text-foreground font-semibold">
+                          Logo (optional)
+                        </Label>
+                        <div className="flex gap-2 mt-3">
+                          <Input
+                            ref={fileInputRef}
+                            id="logo"
+                            type="file"
+                            accept="image/*"
+                            onChange={handleLogoUpload}
+                            className="hidden"
+                          />
                           <Button
                             type="button"
-                            variant="destructive"
-                            onClick={() => setLogo(null)}
-                            className="bg-destructive hover:bg-destructive/90"
+                            variant="outline"
+                            onClick={() => fileInputRef.current?.click()}
+                            className="flex-1 border-2 border-dashed border-muted-foreground/30 hover:border-primary hover:bg-primary/10"
                           >
-                            Remove
+                            <Upload className="w-4 h-4 mr-2" />
+                            {logo ? "Change" : "Add"}
                           </Button>
+                          {logo && (
+                            <Button
+                              type="button"
+                              variant="destructive"
+                              onClick={() => setLogo(null)}
+                              className="bg-destructive hover:bg-destructive/90"
+                            >
+                              Remove
+                            </Button>
+                          )}
+                        </div>
+                        {logo && (
+                          <div className="mt-4">
+                            <Label htmlFor="logoSize" className="text-foreground font-semibold">
+                              Logo Size: {logoSize}%
+                            </Label>
+                            <Slider
+                              id="logoSize"
+                              min={10}
+                              max={40}
+                              step={1}
+                              value={[logoSize]}
+                              onValueChange={(value) => setLogoSize(value[0])}
+                              className="w-full mt-3"
+                            />
+                          </div>
                         )}
                       </div>
-                      {logo && (
-                        <div className="mt-4">
-                          <Label htmlFor="logoSize" className="text-foreground font-semibold">
-                            Logo Size: {logoSize}%
-                          </Label>
-                          <Slider
-                            id="logoSize"
-                            min={10}
-                            max={40}
-                            step={1}
-                            value={[logoSize]}
-                            onValueChange={(value) => setLogoSize(value[0])}
-                            className="w-full mt-3"
-                          />
-                        </div>
-                      )}
-                    </div>
-                  </TabsContent>
+                    </TabsContent>
 
-                  <TabsContent value="error" className="space-y-6">
-                    <div>
-                      <Label htmlFor="errorCorrection" className="text-foreground font-semibold">
-                        Error Correction Level
-                      </Label>
-                      <Select
-                        value={errorCorrection}
-                        onValueChange={(value) => setErrorCorrection(value as "L" | "M" | "Q" | "H")}
-                      >
-                        <SelectTrigger id="errorCorrection" className="mt-2">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="L">Low (7%)</SelectItem>
-                          <SelectItem value="M">Medium (15%)</SelectItem>
-                          <SelectItem value="Q">Quartile (25%)</SelectItem>
-                          <SelectItem value="H">High (30%)</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <p className="text-sm text-muted-foreground mt-2">
-                        Higher levels allow the QR code to remain readable even if partially damaged
-                      </p>
-                    </div>
-                  </TabsContent>
-                </Tabs>
-              </CardContent>
-            </Card>
+                    <TabsContent value="error" className="space-y-6">
+                      <div>
+                        <Label htmlFor="errorCorrection" className="text-foreground font-semibold">
+                          Error Correction Level
+                        </Label>
+                        <Select
+                          value={errorCorrection}
+                          onValueChange={(value) => setErrorCorrection(value as "L" | "M" | "Q" | "H")}
+                        >
+                          <SelectTrigger id="errorCorrection" className="mt-2">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="L">Low (7%)</SelectItem>
+                            <SelectItem value="M">Medium (15%)</SelectItem>
+                            <SelectItem value="Q">Quartile (25%)</SelectItem>
+                            <SelectItem value="H">High (30%)</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <p className="text-sm text-muted-foreground mt-2">
+                          Higher levels allow the QR code to remain readable even if partially damaged
+                        </p>
+                      </div>
+                    </TabsContent>
+                  </Tabs>
+                </CardContent>
+              </Card>
+            </div>
           </div>
 
           <div className="space-y-6">

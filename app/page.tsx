@@ -874,3 +874,4 @@ END:VCARD`
     </div>
   )
 }
+<div align="center">QR Pro - Générateur de QR Codes personnalisés par Phil - 2025 </div>

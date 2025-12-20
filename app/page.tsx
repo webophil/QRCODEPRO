@@ -205,7 +205,7 @@ END:VCARD`
             {/* Logo on the left */}
             <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
               <div className="relative w-12 h-12 rounded-lg overflow-hidden shadow-md">
-                <Image src="/qr-logo.jpg" alt="QR Pro Logo" width={48} height={48} className="object-cover" />
+                <Image src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/qr-logo-diQVcePU4gkDyugjoqH1CKaNC5J7SJ.png" alt="QR Pro Logo" width={48} height={48} className="object-cover" />
               </div>
               <span className="font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent text-5xl">
                 QR Pro

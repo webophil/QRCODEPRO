@@ -266,7 +266,7 @@ END:VCARD`
               <Card className="shadow-2xl border-0 bg-gradient-to-br from-primary to-secondary p-1">
                 <div className="bg-card rounded-lg">
                   <CardHeader className="border-b bg-muted/50">
-                    <CardTitle className="text-2xl font-bold text-foreground">Configuration</CardTitle>
+                    <CardTitle className="text-2xl font-bold text-foreground text-center">Configuration</CardTitle>
                   </CardHeader>
                   <CardContent className="p-6">
                     <form onSubmit={handleGenerate} className="space-y-6">
@@ -570,7 +570,7 @@ END:VCARD`
               <Card className="shadow-2xl border-0 bg-gradient-to-br from-secondary to-accent p-1">
                 <div className="bg-card rounded-lg">
                   <CardHeader className="border-b bg-muted/50">
-                    <CardTitle className="text-2xl font-bold text-foreground">Personnalisation</CardTitle>
+                    <CardTitle className="text-2xl font-bold text-foreground text-center">Personnalisation</CardTitle>
                   </CardHeader>
                   <CardContent className="p-6 space-y-6">
                     <Tabs defaultValue="colors" className="w-full">
@@ -748,7 +748,7 @@ END:VCARD`
               <Card className="shadow-2xl border-0 bg-gradient-to-br from-primary to-secondary p-1">
                 <div className="bg-card rounded-lg">
                   <CardHeader className="border-b bg-muted/50">
-                    <CardTitle className="text-2xl font-bold text-foreground">Aperçu</CardTitle>
+                    <CardTitle className="text-2xl font-bold text-foreground text-center">Aperçu</CardTitle>
                   </CardHeader>
                   <CardContent className="p-8">
                     {qrData && (

@@ -207,7 +207,7 @@ END:VCARD`
               <div className="relative w-12 h-12 rounded-lg overflow-hidden shadow-md">
                 <Image src="/qr-logo.jpg" alt="QR Pro Logo" width={48} height={48} className="object-cover" />
               </div>
-              <span className="text-xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+              <span className="font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent text-5xl">
                 QR Pro
               </span>
             </Link>

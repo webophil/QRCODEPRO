@@ -125,7 +125,6 @@ END:VCARD`
         errorCorrectionLevel: errorCorrection as any,
       })
 
-      // Apply rounded corners if needed
       if (cornerStyle === "rounded") {
         const tempCanvas = document.createElement("canvas")
         tempCanvas.width = size
@@ -151,19 +150,15 @@ END:VCARD`
         // Draw the QR code with clipping
         tempCtx.drawImage(canvas, 0, 0)
 
-        // Replace original canvas content
+        // Replace original canvas content and get new context
         ctx.clearRect(0, 0, size, size)
         ctx.drawImage(tempCanvas, 0, 0)
       }
 
       if (logo) {
-        const logoImg = new Image()
-        // Don't set crossOrigin for blob or data URLs
-        if (!logo.startsWith("blob:") && !logo.startsWith("data:")) {
-          logoImg.crossOrigin = "anonymous"
-        }
-
         await new Promise<void>((resolve, reject) => {
+          const logoImg = new Image()
+
           logoImg.onload = () => {
             try {
               const actualLogoSize = size * (logoSize / 100)
@@ -176,6 +171,8 @@ END:VCARD`
               ctx.shadowColor = "rgba(0, 0, 0, 0.3)"
               ctx.shadowBlur = 8
               ctx.fillRect(logoX - padding, logoY - padding, actualLogoSize + padding * 2, actualLogoSize + padding * 2)
+
+              // Reset shadow
               ctx.shadowColor = "transparent"
               ctx.shadowBlur = 0
 
@@ -187,26 +184,34 @@ END:VCARD`
               reject(err)
             }
           }
+
           logoImg.onerror = (err) => {
             console.error("[v0] Erreur lors du chargement du logo:", err)
-            resolve() // Continue without logo
+            reject(new Error("Impossible de charger le logo"))
           }
+
+          // Set crossOrigin before src for external URLs
+          if (!logo.startsWith("blob:") && !logo.startsWith("data:")) {
+            logoImg.crossOrigin = "anonymous"
+          }
+
           logoImg.src = logo
         })
       }
 
       // Download the canvas as PNG
       canvas.toBlob((blob) => {
-        if (blob) {
-          const url = URL.createObjectURL(blob)
-          const link = document.createElement("a")
-          link.href = url
-          link.download = `qrcode-${qrType}.png`
-          document.body.appendChild(link)
-          link.click()
-          document.body.removeChild(link)
-          URL.revokeObjectURL(url)
+        if (!blob) {
+          throw new Error("Impossible de créer l'image PNG")
         }
+        const url = URL.createObjectURL(blob)
+        const link = document.createElement("a")
+        link.href = url
+        link.download = `qrcode-${qrType}.png`
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+        URL.revokeObjectURL(url)
       }, "image/png")
     } catch (error) {
       console.error("[v0] Erreur lors du téléchargement:", error)

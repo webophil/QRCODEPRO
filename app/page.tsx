@@ -103,7 +103,7 @@ END:VCARD`
     }
   }
 
-  const downloadQRCode = () => {
+  const downloadQRCode = async () => {
     console.log("[v0] Starting PNG download")
     if (!qrRef.current) {
       console.log("[v0] No qrRef found")
@@ -118,7 +118,7 @@ END:VCARD`
 
     console.log("[v0] SVG found, creating canvas")
     const canvas = document.createElement("canvas")
-    const ctx = canvas.getContext("2d", { willReadFrequently: true })
+    const ctx = canvas.getContext("2d")
     if (!ctx) {
       console.log("[v0] No canvas context")
       return
@@ -131,88 +131,53 @@ END:VCARD`
     ctx.fillStyle = backgroundColor
     ctx.fillRect(0, 0, size, size)
 
-    // Get SVG data
-    const svgClone = svg.cloneNode(true) as SVGElement
-    svgClone.setAttribute("width", String(size))
-    svgClone.setAttribute("height", String(size))
+    // Apply rounded corners if needed
+    if (cornerStyle === "rounded") {
+      ctx.save()
+      const radius = 16
+      ctx.beginPath()
+      ctx.moveTo(radius, 0)
+      ctx.lineTo(size - radius, 0)
+      ctx.quadraticCurveTo(size, 0, size, radius)
+      ctx.lineTo(size, size - radius)
+      ctx.quadraticCurveTo(size, size, size - radius, size)
+      ctx.lineTo(radius, size)
+      ctx.quadraticCurveTo(0, size, 0, size - radius)
+      ctx.lineTo(0, radius)
+      ctx.quadraticCurveTo(0, 0, radius, 0)
+      ctx.closePath()
+      ctx.clip()
+    }
 
-    // Ensure all styles are inline
-    const paths = svgClone.querySelectorAll("path")
-    paths.forEach((path) => {
-      const fill = path.getAttribute("fill")
-      if (fill) {
-        path.style.fill = fill
+    // Convert SVG to data URL
+    const svgData = new XMLSerializer().serializeToString(svg)
+    const svgDataUrl = "data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(svgData)))
+
+    // Load and draw QR code
+    const qrImage = new Image()
+
+    await new Promise<void>((resolve, reject) => {
+      qrImage.onload = () => {
+        console.log("[v0] QR image loaded")
+        ctx.drawImage(qrImage, 0, 0, size, size)
+        resolve()
       }
+      qrImage.onerror = (e) => {
+        console.error("[v0] Failed to load QR image:", e)
+        reject(e)
+      }
+      qrImage.src = svgDataUrl
     })
 
-    const svgData = new XMLSerializer().serializeToString(svgClone)
-    const svgBlob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" })
-    const svgUrl = URL.createObjectURL(svgBlob)
+    // Add logo if present
+    if (logo) {
+      console.log("[v0] Loading logo")
+      const logoImg = new Image()
+      logoImg.crossOrigin = "anonymous"
 
-    const img = new Image()
-    img.onload = () => {
-      console.log("[v0] QR image loaded, drawing to canvas")
-
-      // Apply rounded corners mask if needed
-      if (cornerStyle === "rounded") {
-        ctx.save()
-        const radius = 16
-        ctx.beginPath()
-        ctx.moveTo(radius, 0)
-        ctx.lineTo(size - radius, 0)
-        ctx.quadraticCurveTo(size, 0, size, radius)
-        ctx.lineTo(size, size - radius)
-        ctx.quadraticCurveTo(size, size, size - radius, size)
-        ctx.lineTo(radius, size)
-        ctx.quadraticCurveTo(0, size, 0, size - radius)
-        ctx.lineTo(0, radius)
-        ctx.quadraticCurveTo(0, 0, radius, 0)
-        ctx.closePath()
-        ctx.clip()
-      }
-
-      // Draw QR code
-      ctx.drawImage(img, 0, 0, size, size)
-      URL.revokeObjectURL(svgUrl)
-
-      const finishDownload = () => {
-        if (cornerStyle === "rounded") {
-          ctx.restore()
-        }
-
-        console.log("[v0] Converting canvas to blob")
-        canvas.toBlob(
-          (blob) => {
-            if (blob) {
-              console.log("[v0] Blob created, size:", blob.size)
-              const url = URL.createObjectURL(blob)
-              const a = document.createElement("a")
-              a.href = url
-              a.download = `qrcode-${qrType}.png`
-              document.body.appendChild(a)
-              a.click()
-              setTimeout(() => {
-                document.body.removeChild(a)
-                URL.revokeObjectURL(url)
-                console.log("[v0] Download completed")
-              }, 100)
-            } else {
-              console.error("[v0] Failed to create blob")
-            }
-          },
-          "image/png",
-          1.0,
-        )
-      }
-
-      // Add logo if present
-      if (logo) {
-        console.log("[v0] Loading logo")
-        const logoImg = new Image()
-        logoImg.crossOrigin = "anonymous"
-
+      await new Promise<void>((resolve) => {
         logoImg.onload = () => {
-          console.log("[v0] Logo loaded successfully")
+          console.log("[v0] Logo loaded")
           const actualLogoSize = size * (logoSize / 100)
           const logoX = (size - actualLogoSize) / 2
           const logoY = (size - actualLogoSize) / 2
@@ -222,36 +187,42 @@ END:VCARD`
           ctx.fillStyle = "white"
           ctx.shadowColor = "rgba(0, 0, 0, 0.2)"
           ctx.shadowBlur = 4
-          ctx.shadowOffsetX = 0
-          ctx.shadowOffsetY = 2
           ctx.fillRect(logoX - padding, logoY - padding, actualLogoSize + padding * 2, actualLogoSize + padding * 2)
           ctx.shadowColor = "transparent"
 
           // Draw logo
           ctx.drawImage(logoImg, logoX, logoY, actualLogoSize, actualLogoSize)
-          console.log("[v0] Logo drawn")
-
-          finishDownload()
+          resolve()
         }
-
-        logoImg.onerror = (e) => {
-          console.error("[v0] Logo failed to load:", e)
-          finishDownload()
+        logoImg.onerror = () => {
+          console.error("[v0] Logo failed to load")
+          resolve()
         }
-
         logoImg.src = logo
-      } else {
-        finishDownload()
+      })
+    }
+
+    if (cornerStyle === "rounded") {
+      ctx.restore()
+    }
+
+    // Download
+    console.log("[v0] Creating download")
+    canvas.toBlob((blob) => {
+      if (blob) {
+        const url = URL.createObjectURL(blob)
+        const a = document.createElement("a")
+        a.href = url
+        a.download = `qrcode-${qrType}.png`
+        document.body.appendChild(a)
+        a.click()
+        setTimeout(() => {
+          document.body.removeChild(a)
+          URL.revokeObjectURL(url)
+          console.log("[v0] Download completed")
+        }, 100)
       }
-    }
-
-    img.onerror = (e) => {
-      console.error("[v0] Failed to load QR image:", e)
-      URL.revokeObjectURL(svgUrl)
-    }
-
-    console.log("[v0] Loading SVG as image")
-    img.src = svgUrl
+    }, "image/png")
   }
 
   const downloadQRCodeSVG = () => {

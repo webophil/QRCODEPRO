@@ -120,6 +120,7 @@ END:VCARD`
       canvas.width = size
       canvas.height = size
 
+      // Apply rounded corners if needed
       if (cornerStyle === "rounded") {
         ctx.save()
         ctx.beginPath()
@@ -141,11 +142,13 @@ END:VCARD`
 
       if (logo) {
         const logoImg = new Image()
+        logoImg.crossOrigin = "anonymous"
         logoImg.onload = () => {
           const actualLogoSize = size * (logoSize / 100)
           const logoX = (size - actualLogoSize) / 2
           const logoY = (size - actualLogoSize) / 2
 
+          // Draw white background for logo
           ctx.fillStyle = "white"
           ctx.fillRect(logoX - 5, logoY - 5, actualLogoSize + 10, actualLogoSize + 10)
 
@@ -161,10 +164,15 @@ END:VCARD`
               const a = document.createElement("a")
               a.href = url
               a.download = `qrcode-${qrType}.png`
+              document.body.appendChild(a)
               a.click()
+              document.body.removeChild(a)
               URL.revokeObjectURL(url)
             }
           })
+        }
+        logoImg.onerror = () => {
+          console.error("[v0] Failed to load logo image")
         }
         logoImg.src = logo
       } else {
@@ -178,14 +186,23 @@ END:VCARD`
             const a = document.createElement("a")
             a.href = url
             a.download = `qrcode-${qrType}.png`
+            document.body.appendChild(a)
             a.click()
+            document.body.removeChild(a)
             URL.revokeObjectURL(url)
           }
         })
       }
     }
 
-    img.src = "data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(svgData)))
+    img.onerror = () => {
+      console.error("[v0] Failed to load QR code image")
+    }
+
+    // Use proper encoding for SVG data
+    const svgBlob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" })
+    const url = URL.createObjectURL(svgBlob)
+    img.src = url
   }
 
   const downloadQRCodeSVG = () => {

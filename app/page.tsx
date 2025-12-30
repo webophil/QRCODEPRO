@@ -104,125 +104,103 @@ END:VCARD`
   }
 
   const downloadQRCode = async () => {
-    console.log("[v0] Starting PNG download")
-    if (!qrRef.current) {
-      console.log("[v0] No qrRef found")
-      return
-    }
+    try {
+      const QRCode = (await import("qrcode")).default
 
-    const svg = qrRef.current.querySelector("svg")
-    if (!svg) {
-      console.log("[v0] No SVG found")
-      return
-    }
+      // Create canvas
+      const canvas = document.createElement("canvas")
+      canvas.width = size
+      canvas.height = size
+      const ctx = canvas.getContext("2d")
+      if (!ctx) return
 
-    console.log("[v0] SVG found, creating canvas")
-    const canvas = document.createElement("canvas")
-    const ctx = canvas.getContext("2d")
-    if (!ctx) {
-      console.log("[v0] No canvas context")
-      return
-    }
-
-    canvas.width = size
-    canvas.height = size
-
-    // Fill background
-    ctx.fillStyle = backgroundColor
-    ctx.fillRect(0, 0, size, size)
-
-    // Apply rounded corners if needed
-    if (cornerStyle === "rounded") {
-      ctx.save()
-      const radius = 16
-      ctx.beginPath()
-      ctx.moveTo(radius, 0)
-      ctx.lineTo(size - radius, 0)
-      ctx.quadraticCurveTo(size, 0, size, radius)
-      ctx.lineTo(size, size - radius)
-      ctx.quadraticCurveTo(size, size, size - radius, size)
-      ctx.lineTo(radius, size)
-      ctx.quadraticCurveTo(0, size, 0, size - radius)
-      ctx.lineTo(0, radius)
-      ctx.quadraticCurveTo(0, 0, radius, 0)
-      ctx.closePath()
-      ctx.clip()
-    }
-
-    // Convert SVG to data URL
-    const svgData = new XMLSerializer().serializeToString(svg)
-    const svgDataUrl = "data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(svgData)))
-
-    // Load and draw QR code
-    const qrImage = new Image()
-
-    await new Promise<void>((resolve, reject) => {
-      qrImage.onload = () => {
-        console.log("[v0] QR image loaded")
-        ctx.drawImage(qrImage, 0, 0, size, size)
-        resolve()
-      }
-      qrImage.onerror = (e) => {
-        console.error("[v0] Failed to load QR image:", e)
-        reject(e)
-      }
-      qrImage.src = svgDataUrl
-    })
-
-    // Add logo if present
-    if (logo) {
-      console.log("[v0] Loading logo")
-      const logoImg = new Image()
-      logoImg.crossOrigin = "anonymous"
-
-      await new Promise<void>((resolve) => {
-        logoImg.onload = () => {
-          console.log("[v0] Logo loaded")
-          const actualLogoSize = size * (logoSize / 100)
-          const logoX = (size - actualLogoSize) / 2
-          const logoY = (size - actualLogoSize) / 2
-          const padding = 10
-
-          // Draw white background for logo
-          ctx.fillStyle = "white"
-          ctx.shadowColor = "rgba(0, 0, 0, 0.2)"
-          ctx.shadowBlur = 4
-          ctx.fillRect(logoX - padding, logoY - padding, actualLogoSize + padding * 2, actualLogoSize + padding * 2)
-          ctx.shadowColor = "transparent"
-
-          // Draw logo
-          ctx.drawImage(logoImg, logoX, logoY, actualLogoSize, actualLogoSize)
-          resolve()
-        }
-        logoImg.onerror = () => {
-          console.error("[v0] Logo failed to load")
-          resolve()
-        }
-        logoImg.src = logo
+      // Generate QR code directly to canvas
+      await QRCode.toCanvas(canvas, generateQRData(), {
+        width: size,
+        margin: 1,
+        color: {
+          dark: color,
+          light: backgroundColor,
+        },
+        errorCorrectionLevel: errorCorrection as any,
       })
-    }
 
-    if (cornerStyle === "rounded") {
-      ctx.restore()
-    }
+      // Apply rounded corners if needed
+      if (cornerStyle === "rounded") {
+        const tempCanvas = document.createElement("canvas")
+        tempCanvas.width = size
+        tempCanvas.height = size
+        const tempCtx = tempCanvas.getContext("2d")
+        if (!tempCtx) return
 
-    // Download
-    console.log("[v0] Creating download")
-    canvas.toBlob((blob) => {
-      if (blob) {
-        const url = URL.createObjectURL(blob)
-        const a = document.createElement("a")
-        a.href = url
-        a.download = `qrcode-${qrType}.png`
-        document.body.appendChild(a)
-        a.click()
-        setTimeout(() => {
-          document.body.removeChild(a)
-          URL.revokeObjectURL(url)
-          console.log("[v0] Download completed")
-        }, 100)
+        // Create rounded rectangle mask
+        const radius = 20
+        tempCtx.beginPath()
+        tempCtx.moveTo(radius, 0)
+        tempCtx.lineTo(size - radius, 0)
+        tempCtx.quadraticCurveTo(size, 0, size, radius)
+        tempCtx.lineTo(size, size - radius)
+        tempCtx.quadraticCurveTo(size, size, size - radius, size)
+        tempCtx.lineTo(radius, size)
+        tempCtx.quadraticCurveTo(0, size, 0, size - radius)
+        tempCtx.lineTo(0, radius)
+        tempCtx.quadraticCurveTo(0, 0, radius, 0)
+        tempCtx.closePath()
+        tempCtx.clip()
+
+        // Draw the QR code with clipping
+        tempCtx.drawImage(canvas, 0, 0)
+
+        // Replace original canvas content
+        ctx.clearRect(0, 0, size, size)
+        ctx.drawImage(tempCanvas, 0, 0)
       }
-    }, "image/png")
+
+      // Add logo if present
+      if (logo) {
+        const logoImg = new Image()
+        logoImg.crossOrigin = "anonymous"
+
+        await new Promise<void>((resolve) => {
+          logoImg.onload = () => {
+            const actualLogoSize = size * (logoSize / 100)
+            const logoX = (size - actualLogoSize) / 2
+            const logoY = (size - actualLogoSize) / 2
+            const padding = 10
+
+            // White background for logo
+            ctx.fillStyle = "white"
+            ctx.shadowColor = "rgba(0, 0, 0, 0.3)"
+            ctx.shadowBlur = 8
+            ctx.fillRect(logoX - padding, logoY - padding, actualLogoSize + padding * 2, actualLogoSize + padding * 2)
+            ctx.shadowColor = "transparent"
+
+            // Draw logo
+            ctx.drawImage(logoImg, logoX, logoY, actualLogoSize, actualLogoSize)
+            resolve()
+          }
+          logoImg.onerror = () => resolve()
+          logoImg.src = logo
+        })
+      }
+
+      // Download the canvas as PNG
+      canvas.toBlob((blob) => {
+        if (blob) {
+          const url = URL.createObjectURL(blob)
+          const link = document.createElement("a")
+          link.href = url
+          link.download = `qrcode-${qrType}.png`
+          document.body.appendChild(link)
+          link.click()
+          document.body.removeChild(link)
+          URL.revokeObjectURL(url)
+        }
+      }, "image/png")
+    } catch (error) {
+      console.error("Erreur lors du téléchargement:", error)
+      alert("Erreur lors du téléchargement du QR code")
+    }
   }
 
   const downloadQRCodeSVG = () => {

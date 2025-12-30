@@ -156,30 +156,41 @@ END:VCARD`
         ctx.drawImage(tempCanvas, 0, 0)
       }
 
-      // Add logo if present
       if (logo) {
         const logoImg = new Image()
-        logoImg.crossOrigin = "anonymous"
+        // Don't set crossOrigin for blob or data URLs
+        if (!logo.startsWith("blob:") && !logo.startsWith("data:")) {
+          logoImg.crossOrigin = "anonymous"
+        }
 
-        await new Promise<void>((resolve) => {
+        await new Promise<void>((resolve, reject) => {
           logoImg.onload = () => {
-            const actualLogoSize = size * (logoSize / 100)
-            const logoX = (size - actualLogoSize) / 2
-            const logoY = (size - actualLogoSize) / 2
-            const padding = 10
+            try {
+              const actualLogoSize = size * (logoSize / 100)
+              const logoX = (size - actualLogoSize) / 2
+              const logoY = (size - actualLogoSize) / 2
+              const padding = 10
 
-            // White background for logo
-            ctx.fillStyle = "white"
-            ctx.shadowColor = "rgba(0, 0, 0, 0.3)"
-            ctx.shadowBlur = 8
-            ctx.fillRect(logoX - padding, logoY - padding, actualLogoSize + padding * 2, actualLogoSize + padding * 2)
-            ctx.shadowColor = "transparent"
+              // White background for logo
+              ctx.fillStyle = "white"
+              ctx.shadowColor = "rgba(0, 0, 0, 0.3)"
+              ctx.shadowBlur = 8
+              ctx.fillRect(logoX - padding, logoY - padding, actualLogoSize + padding * 2, actualLogoSize + padding * 2)
+              ctx.shadowColor = "transparent"
+              ctx.shadowBlur = 0
 
-            // Draw logo
-            ctx.drawImage(logoImg, logoX, logoY, actualLogoSize, actualLogoSize)
-            resolve()
+              // Draw logo
+              ctx.drawImage(logoImg, logoX, logoY, actualLogoSize, actualLogoSize)
+              resolve()
+            } catch (err) {
+              console.error("[v0] Erreur lors du dessin du logo:", err)
+              reject(err)
+            }
           }
-          logoImg.onerror = () => resolve()
+          logoImg.onerror = (err) => {
+            console.error("[v0] Erreur lors du chargement du logo:", err)
+            resolve() // Continue without logo
+          }
           logoImg.src = logo
         })
       }
@@ -198,7 +209,7 @@ END:VCARD`
         }
       }, "image/png")
     } catch (error) {
-      console.error("Erreur lors du téléchargement:", error)
+      console.error("[v0] Erreur lors du téléchargement:", error)
       alert("Erreur lors du téléchargement du QR code")
     }
   }

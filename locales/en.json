@@ -86,7 +86,11 @@
   "aria": {
     "toggleTheme": "Toggle theme",
     "logo": "QR Pro Logo",
-    "french": "Français",
-    "english": "English"
+    "selectLanguage": "Select language"
+  },
+  "languages": {
+    "fr": "Français",
+    "en": "English",
+    "es": "Español"
   }
 }

@@ -11,7 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Slider } from "@/components/ui/slider"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Textarea } from "@/components/ui/textarea"
-import { Download, Upload, Link2, FileText, Mail, MessageSquare, Wifi, User, Sun, Moon } from "lucide-react"
+import { Download, Upload, Link2, FileText, Mail, MessageSquare, Wifi, User, Sun, Moon, Globe } from "lucide-react"
 import Image from "next/image"
 import { useLanguage } from "@/lib/i18n"
 
@@ -288,25 +288,52 @@ END:VCARD`
                 )}
               </button>
 
-              <button onClick={() => setLocale("fr")} className="hover:opacity-70 transition-opacity">
-                <Image
-                  src="/french-flag.png"
-                  alt={t.aria.french}
-                  width={32}
-                  height={24}
-                  className="rounded border border-border"
-                />
-              </button>
-
-              <button onClick={() => setLocale("en")} className="hover:opacity-70 transition-opacity">
-                <Image
-                  src="/uk-flag.png"
-                  alt={t.aria.english}
-                  width={32}
-                  height={24}
-                  className="rounded border border-border"
-                />
-              </button>
+              <Select value={locale} onValueChange={(value) => setLocale(value as "fr" | "en" | "es")}>
+                <SelectTrigger className="w-[160px] bg-card border-border">
+                  <div className="flex items-center gap-2">
+                    <Globe className="w-4 h-4 text-primary" />
+                    <SelectValue />
+                  </div>
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="fr">
+                    <div className="flex items-center gap-2">
+                      <Image
+                        src="/french-flag.png"
+                        alt="Français"
+                        width={20}
+                        height={15}
+                        className="rounded border border-border"
+                      />
+                      <span>{t.languages?.fr || "Français"}</span>
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="en">
+                    <div className="flex items-center gap-2">
+                      <Image
+                        src="/uk-flag.png"
+                        alt="English"
+                        width={20}
+                        height={15}
+                        className="rounded border border-border"
+                      />
+                      <span>{t.languages?.en || "English"}</span>
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="es">
+                    <div className="flex items-center gap-2">
+                      <Image
+                        src="/spanish-flag.png"
+                        alt="Español"
+                        width={20}
+                        height={15}
+                        className="rounded border border-border"
+                      />
+                      <span>{t.languages?.es || "Español"}</span>
+                    </div>
+                  </SelectItem>
+                </SelectContent>
+              </Select>
             </div>
           </div>
 

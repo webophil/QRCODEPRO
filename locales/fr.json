@@ -87,6 +87,12 @@
     "toggleTheme": "Toggle theme",
     "logo": "QR Pro Logo",
     "french": "Français",
-    "english": "English"
+    "english": "English",
+    "selectLanguage": "Sélectionner la langue"
+  },
+  "languages": {
+    "fr": "Français",
+    "en": "English",
+    "es": "Español"
   }
 }

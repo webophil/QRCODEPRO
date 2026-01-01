@@ -3,14 +3,16 @@
 import { createContext, useContext, useState, useEffect, type ReactNode } from "react"
 import frTranslations from "@/locales/fr.json"
 import enTranslations from "@/locales/en.json"
+import esTranslations from "@/locales/es.json"
 
-type Locale = "fr" | "en"
+type Locale = "fr" | "en" | "es"
 
 type Translations = typeof frTranslations
 
 const translations: Record<Locale, Translations> = {
   fr: frTranslations,
   en: enTranslations,
+  es: esTranslations,
 }
 
 interface LanguageContextType {

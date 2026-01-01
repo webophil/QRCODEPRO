@@ -1,0 +1,92 @@
+{
+  "appName": "QR Pro",
+  "title": "QR Code Generator",
+  "subtitle": "Custom QR codes for all your professional and personal needs",
+  "configuration": "Configuration",
+  "customization": "Customization",
+  "preview": "Preview",
+  "contentType": "Content Type",
+  "tabs": {
+    "url": "URL",
+    "text": "Text",
+    "email": "Email",
+    "sms": "SMS",
+    "wifi": "Wi-Fi",
+    "vcard": "vCard"
+  },
+  "fields": {
+    "url": "URL",
+    "urlPlaceholder": "https://example.com",
+    "text": "Text",
+    "textPlaceholder": "Enter your text here...",
+    "emailAddress": "Email Address",
+    "emailAddressPlaceholder": "contact@example.com",
+    "emailSubject": "Subject",
+    "emailSubjectPlaceholder": "Email subject",
+    "emailBody": "Message",
+    "emailBodyPlaceholder": "Message body",
+    "smsPhone": "Phone Number",
+    "smsPhonePlaceholder": "+1234567890",
+    "smsMessage": "Message",
+    "smsMessagePlaceholder": "Your message",
+    "wifiSsid": "Network Name (SSID)",
+    "wifiSsidPlaceholder": "MyWiFi",
+    "wifiPassword": "Password",
+    "wifiPasswordPlaceholder": "••••••••",
+    "wifiEncryption": "Security Type",
+    "wifiEncryptionWPA": "WPA/WPA2",
+    "wifiEncryptionWEP": "WEP",
+    "wifiEncryptionNone": "None",
+    "vcardFirstName": "First Name",
+    "vcardFirstNamePlaceholder": "John",
+    "vcardLastName": "Last Name",
+    "vcardLastNamePlaceholder": "Doe",
+    "vcardPhone": "Phone",
+    "vcardPhonePlaceholder": "+1234567890",
+    "vcardEmail": "Email",
+    "vcardEmailPlaceholder": "john.doe@example.com",
+    "vcardOrganization": "Organization",
+    "vcardOrganizationPlaceholder": "Company name",
+    "vcardUrl": "Website",
+    "vcardUrlPlaceholder": "https://example.com"
+  },
+  "buttons": {
+    "generate": "Generate QR Code",
+    "downloadPNG": "Download as PNG",
+    "downloadSVG": "Download as SVG",
+    "add": "Add",
+    "change": "Change",
+    "remove": "Remove"
+  },
+  "customizationTabs": {
+    "colors": "Colors",
+    "style": "Style & Size",
+    "logo": "Logo",
+    "error": "Error Correction"
+  },
+  "customizationFields": {
+    "qrColor": "QR Color",
+    "backgroundColor": "Background Color",
+    "cornerStyle": "Corner Style",
+    "cornerStyleSquare": "Classic Square",
+    "cornerStyleRounded": "Rounded Corners",
+    "size": "Size",
+    "logo": "Logo (optional)",
+    "logoSize": "Logo Size",
+    "errorCorrection": "Error Correction Level",
+    "errorCorrectionL": "Low (7%)",
+    "errorCorrectionM": "Medium (15%)",
+    "errorCorrectionQ": "Quartile (25%)",
+    "errorCorrectionH": "High (30%)",
+    "errorCorrectionDescription": "Higher levels allow the QR code to remain readable even if partially damaged"
+  },
+  "errors": {
+    "downloadError": "Error downloading QR code"
+  },
+  "aria": {
+    "toggleTheme": "Toggle theme",
+    "logo": "QR Pro Logo",
+    "french": "Français",
+    "english": "English"
+  }
+}

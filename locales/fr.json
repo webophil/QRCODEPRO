@@ -1,0 +1,92 @@
+{
+  "appName": "QR Pro",
+  "title": "Générateur QR Code",
+  "subtitle": "QR codes personnalisés pour tous vos besoins professionnels et personnels",
+  "configuration": "Configuration",
+  "customization": "Personnalisation",
+  "preview": "Aperçu",
+  "contentType": "Type de contenu",
+  "tabs": {
+    "url": "URL",
+    "text": "Texte",
+    "email": "Email",
+    "sms": "SMS",
+    "wifi": "Wi-Fi",
+    "vcard": "vCard"
+  },
+  "fields": {
+    "url": "URL",
+    "urlPlaceholder": "https://example.com",
+    "text": "Texte",
+    "textPlaceholder": "Entrez votre texte ici...",
+    "emailAddress": "Adresse email",
+    "emailAddressPlaceholder": "contact@example.com",
+    "emailSubject": "Sujet",
+    "emailSubjectPlaceholder": "Objet de l'email",
+    "emailBody": "Message",
+    "emailBodyPlaceholder": "Corps du message",
+    "smsPhone": "Numéro de téléphone",
+    "smsPhonePlaceholder": "+33612345678",
+    "smsMessage": "Message",
+    "smsMessagePlaceholder": "Votre message",
+    "wifiSsid": "Nom du réseau (SSID)",
+    "wifiSsidPlaceholder": "MonWiFi",
+    "wifiPassword": "Mot de passe",
+    "wifiPasswordPlaceholder": "••••••••",
+    "wifiEncryption": "Type de sécurité",
+    "wifiEncryptionWPA": "WPA/WPA2",
+    "wifiEncryptionWEP": "WEP",
+    "wifiEncryptionNone": "Aucune",
+    "vcardFirstName": "Prénom",
+    "vcardFirstNamePlaceholder": "Jean",
+    "vcardLastName": "Nom",
+    "vcardLastNamePlaceholder": "Dupont",
+    "vcardPhone": "Téléphone",
+    "vcardPhonePlaceholder": "+33612345678",
+    "vcardEmail": "Email",
+    "vcardEmailPlaceholder": "jean.dupont@example.com",
+    "vcardOrganization": "Organisation",
+    "vcardOrganizationPlaceholder": "Nom de l'entreprise",
+    "vcardUrl": "Site web",
+    "vcardUrlPlaceholder": "https://example.com"
+  },
+  "buttons": {
+    "generate": "Générer le QR Code",
+    "downloadPNG": "Télécharger en PNG",
+    "downloadSVG": "Télécharger en SVG",
+    "add": "Ajouter",
+    "change": "Changer",
+    "remove": "Supprimer"
+  },
+  "customizationTabs": {
+    "colors": "Couleurs",
+    "style": "Style et Taille",
+    "logo": "Logo",
+    "error": "Correction"
+  },
+  "customizationFields": {
+    "qrColor": "Couleur QR",
+    "backgroundColor": "Couleur fond",
+    "cornerStyle": "Style des coins",
+    "cornerStyleSquare": "Carrés classiques",
+    "cornerStyleRounded": "Coins arrondis",
+    "size": "Taille",
+    "logo": "Logo (optionnel)",
+    "logoSize": "Taille du logo",
+    "errorCorrection": "Niveau de correction d'erreur",
+    "errorCorrectionL": "Faible (7%)",
+    "errorCorrectionM": "Moyen (15%)",
+    "errorCorrectionQ": "Quartile (25%)",
+    "errorCorrectionH": "Élevé (30%)",
+    "errorCorrectionDescription": "Un niveau plus élevé permet au QR code de rester lisible même partiellement endommagé"
+  },
+  "errors": {
+    "downloadError": "Erreur lors du téléchargement du QR code"
+  },
+  "aria": {
+    "toggleTheme": "Toggle theme",
+    "logo": "QR Pro Logo",
+    "french": "Français",
+    "english": "English"
+  }
+}

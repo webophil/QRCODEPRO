@@ -323,13 +323,13 @@ END:VCARD`
                   <SelectItem value="es">
                     <div className="flex items-center gap-2">
                       <Image
-                        src="/spanish-flag.png"
-                        alt="Español"
+                        src="/spanish-flag.jpg"
+                        alt="Espanol"
                         width={20}
                         height={15}
                         className="rounded border border-border"
                       />
-                      <span>{t.languages?.es || "Español"}</span>
+                      <span>{t.languages?.es || "Espanol"}</span>
                     </div>
                   </SelectItem>
                 </SelectContent>

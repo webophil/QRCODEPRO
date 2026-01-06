@@ -357,7 +357,7 @@ END:VCARD`
 
       console.log("[v0] Creating blob...")
       const blob = await new Promise<Blob | null>((resolve) => {
-        canvas.toBlob(resolve, "image/png")
+        canvas.toBlob(resolve, "image/png", 1.0)
       })
 
       if (!blob) {
@@ -367,31 +367,62 @@ END:VCARD`
 
       console.log("[v0] Blob created, size:", blob.size, "bytes")
 
-      if (!navigator.clipboard || !navigator.clipboard.write) {
-        console.error("[v0] Clipboard API not available")
-        alert(
-          t.messages.clipboardNotSupported ||
-            "Votre navigateur ne supporte pas la copie dans le presse-papiers. Utilisez le bouton Télécharger PNG à la place.",
-        )
-        return
+      try {
+        if (navigator.clipboard && navigator.clipboard.write) {
+          console.log("[v0] Attempting modern Clipboard API...")
+          const clipboardItem = new ClipboardItem({
+            "image/png": blob,
+          })
+          await navigator.clipboard.write([clipboardItem])
+          console.log("[v0] Successfully copied via Clipboard API!")
+          alert(t.messages.copiedToClipboard)
+          return
+        }
+      } catch (clipError) {
+        console.error("[v0] Clipboard API failed:", clipError)
       }
 
-      console.log("[v0] Writing to clipboard...")
+      // Fallback: Try execCommand approach
+      try {
+        console.log("[v0] Trying execCommand fallback...")
+        const img = new Image()
+        img.src = canvas.toDataURL("image/png")
 
-      await navigator.clipboard.write([
-        new ClipboardItem({
-          "image/png": blob,
-        }),
-      ])
+        const div = document.createElement("div")
+        div.contentEditable = "true"
+        div.appendChild(img)
+        document.body.appendChild(div)
 
-      console.log("[v0] Successfully copied to clipboard!")
-      alert(t.messages.copiedToClipboard)
+        const range = document.createRange()
+        range.selectNodeContents(div)
+        const selection = window.getSelection()
+        if (selection) {
+          selection.removeAllRanges()
+          selection.addRange(range)
+
+          const success = document.execCommand("copy")
+          console.log("[v0] execCommand result:", success)
+
+          document.body.removeChild(div)
+
+          if (success) {
+            alert(t.messages.copiedToClipboard)
+            return
+          }
+        }
+      } catch (execError) {
+        console.error("[v0] execCommand failed:", execError)
+      }
+
+      // If all methods fail
+      console.error("[v0] All clipboard methods failed")
+      alert(
+        t.messages.clipboardNotSupported ||
+          "Impossible de copier dans le presse-papiers. Utilisez le bouton Télécharger PNG à la place.",
+      )
     } catch (error) {
       console.error("[v0] Copy error:", error)
-      alert(
-        t.messages.clipboardError ||
-          "Erreur lors de la copie dans le presse-papiers. Utilisez le bouton Télécharger PNG à la place.",
-      )
+      alert(t.messages.clipboardError || "Erreur lors de la copie. Utilisez le bouton Télécharger PNG à la place.")
     }
   }
 

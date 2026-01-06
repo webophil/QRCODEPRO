@@ -267,17 +267,20 @@ END:VCARD`
 
   const copyQRCodeToClipboard = async () => {
     try {
+      console.log("[v0] Starting clipboard copy...")
       const QRCode = (await import("qrcode")).default
 
-      // Create canvas with reasonable size limit
-      const canvasSize = Math.min(size, 2048) // Limit to prevent excessive memory usage
+      const canvasSize = Math.min(size, 2048)
       const canvas = document.createElement("canvas")
       canvas.width = canvasSize
       canvas.height = canvasSize
       const ctx = canvas.getContext("2d", { willReadFrequently: true })
-      if (!ctx) return
+      if (!ctx) {
+        console.error("[v0] Failed to get canvas context")
+        return
+      }
 
-      // Generate QR code
+      console.log("[v0] Generating QR code on canvas...")
       await QRCode.toCanvas(canvas, generateQRData(), {
         width: canvasSize,
         margin: 1,
@@ -290,6 +293,7 @@ END:VCARD`
 
       // Apply rounded corners if needed
       if (cornerStyle === "rounded") {
+        console.log("[v0] Applying rounded corners...")
         const imageData = ctx.getImageData(0, 0, canvasSize, canvasSize)
         ctx.clearRect(0, 0, canvasSize, canvasSize)
 
@@ -312,6 +316,7 @@ END:VCARD`
 
       // Add logo if present
       if (logo) {
+        console.log("[v0] Adding logo...")
         await new Promise<void>((resolve, reject) => {
           const logoImg = new Image()
 
@@ -322,25 +327,27 @@ END:VCARD`
               const logoY = (canvasSize - actualLogoSize) / 2
               const padding = Math.floor(actualLogoSize * 0.1)
 
-              // Draw white background for logo
               ctx.fillStyle = "white"
               ctx.shadowColor = "rgba(0, 0, 0, 0.3)"
               ctx.shadowBlur = 8
               ctx.fillRect(logoX - padding, logoY - padding, actualLogoSize + padding * 2, actualLogoSize + padding * 2)
 
-              // Reset shadow
               ctx.shadowColor = "transparent"
               ctx.shadowBlur = 0
 
-              // Draw logo
               ctx.drawImage(logoImg, logoX, logoY, actualLogoSize, actualLogoSize)
+              console.log("[v0] Logo added successfully")
               resolve()
             } catch (err) {
+              console.error("[v0] Logo drawing error:", err)
               reject(err)
             }
           }
 
-          logoImg.onerror = () => reject(new Error("Unable to load logo"))
+          logoImg.onerror = () => {
+            console.error("[v0] Logo loading error")
+            reject(new Error("Unable to load logo"))
+          }
 
           if (!logo.startsWith("blob:") && !logo.startsWith("data:")) {
             logoImg.crossOrigin = "anonymous"
@@ -350,31 +357,35 @@ END:VCARD`
         })
       }
 
-      // Convert to blob and copy to clipboard
-      canvas.toBlob(
-        async (blob) => {
-          if (!blob) {
-            throw new Error("Unable to create PNG image")
-          }
+      console.log("[v0] Creating blob...")
+      const blob = await new Promise<Blob | null>((resolve) => {
+        canvas.toBlob(resolve, "image/png", 0.95)
+      })
 
-          try {
-            await navigator.clipboard.write([
-              new ClipboardItem({
-                "image/png": blob,
-              }),
-            ])
-            alert(t.messages.copiedToClipboard)
-          } catch (err) {
-            console.error("Clipboard error:", err)
-            alert(t.messages.clipboardError)
-          }
-        },
-        "image/png",
-        0.95,
-      ) // Add quality parameter
+      if (!blob) {
+        console.error("[v0] Failed to create blob")
+        throw new Error("Unable to create PNG image")
+      }
+
+      console.log("[v0] Blob created, size:", blob.size, "bytes")
+      console.log("[v0] Writing to clipboard...")
+
+      try {
+        await navigator.clipboard.write([
+          new ClipboardItem({
+            "image/png": blob,
+          }),
+        ])
+        console.log("[v0] Successfully copied to clipboard!")
+        alert(t.messages.copiedToClipboard)
+      } catch (clipboardErr) {
+        console.error("[v0] Clipboard write error:", clipboardErr)
+        // Fallback: try to download instead
+        alert(t.messages.clipboardError + " - " + (clipboardErr as Error).message)
+      }
     } catch (error) {
-      console.error("Copy error:", error)
-      alert(t.messages.clipboardError)
+      console.error("[v0] Copy error:", error)
+      alert(t.messages.clipboardError + ": " + (error as Error).message)
     }
   }
 
@@ -982,59 +993,24 @@ END:VCARD`
                                 position: "relative",
                               }}
                             >
-                              <QRCodeSVG
-                                value={qrData}
-                                size={size}
-                                fgColor={color}
-                                bgColor={backgroundColor}
-                                level={errorCorrection}
-                                includeMargin={false}
-                              />
-                              {logo && (
-                                <div
-                                  className="absolute top-1/2 left-1/2"
-                                  style={{
-                                    transform: "translate(-50%, -50%)",
-                                    width: `${size * (logoSize / 100)}px`,
-                                    height: `${size * (logoSize / 100)}px`,
-                                  }}
-                                >
-                                  <div className="w-full h-full bg-white p-1 rounded-lg shadow-md flex items-center justify-center">
-                                    <img
-                                      src={logo || "/placeholder.svg"}
-                                      alt="Logo"
-                                      className="w-full h-full object-contain"
-                                    />
-                                  </div>
-                                </div>
-                              )}
+                              <QRCodeSVG value={qrData} size={size} fgColor={color} bgColor={backgroundColor} />
                             </div>
                           </div>
                         </div>
-                        <Button
-                          onClick={downloadQRCode}
-                          className="w-full bg-chart-1 hover:bg-chart-1/90 text-primary-foreground font-semibold"
-                          size="lg"
-                        >
-                          <Download className="w-5 h-5 mr-2" />
-                          {t.buttons.downloadPNG}
-                        </Button>
-                        <Button
-                          onClick={downloadQRCodeSVG}
-                          className="w-full bg-chart-2 hover:bg-chart-2/90 text-primary-foreground font-semibold"
-                          size="lg"
-                        >
-                          <Download className="w-5 h-5 mr-2" />
-                          {t.buttons.downloadSVG}
-                        </Button>
-                        <Button
-                          onClick={copyQRCodeToClipboard}
-                          className="w-full bg-chart-3 hover:bg-chart-3/90 text-primary-foreground font-semibold"
-                          size="lg"
-                        >
-                          <Copy className="w-5 h-5 mr-2" />
-                          {t.buttons.copyToClipboard}
-                        </Button>
+                        <div className="flex gap-4">
+                          <Button onClick={downloadQRCode} variant="outline">
+                            <Download className="w-4 h-4 mr-2" />
+                            {t.buttons.downloadPNG}
+                          </Button>
+                          <Button onClick={downloadQRCodeSVG} variant="outline">
+                            <Download className="w-4 h-4 mr-2" />
+                            {t.buttons.downloadSVG}
+                          </Button>
+                          <Button onClick={copyQRCodeToClipboard} variant="outline">
+                            <Copy className="w-4 h-4 mr-2" />
+                            {t.buttons.copyToClipboard}
+                          </Button>
+                        </div>
                       </div>
                     )}
                   </CardContent>

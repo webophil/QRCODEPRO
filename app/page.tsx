@@ -291,7 +291,6 @@ END:VCARD`
         errorCorrectionLevel: errorCorrection as any,
       })
 
-      // Apply rounded corners if needed
       if (cornerStyle === "rounded") {
         console.log("[v0] Applying rounded corners...")
         const imageData = ctx.getImageData(0, 0, canvasSize, canvasSize)
@@ -314,7 +313,6 @@ END:VCARD`
         ctx.putImageData(imageData, 0, 0)
       }
 
-      // Add logo if present
       if (logo) {
         console.log("[v0] Adding logo...")
         await new Promise<void>((resolve, reject) => {
@@ -359,7 +357,7 @@ END:VCARD`
 
       console.log("[v0] Creating blob...")
       const blob = await new Promise<Blob | null>((resolve) => {
-        canvas.toBlob(resolve, "image/png", 0.95)
+        canvas.toBlob(resolve, "image/png")
       })
 
       if (!blob) {
@@ -368,24 +366,32 @@ END:VCARD`
       }
 
       console.log("[v0] Blob created, size:", blob.size, "bytes")
+
+      if (!navigator.clipboard || !navigator.clipboard.write) {
+        console.error("[v0] Clipboard API not available")
+        alert(
+          t.messages.clipboardNotSupported ||
+            "Votre navigateur ne supporte pas la copie dans le presse-papiers. Utilisez le bouton Télécharger PNG à la place.",
+        )
+        return
+      }
+
       console.log("[v0] Writing to clipboard...")
 
-      try {
-        await navigator.clipboard.write([
-          new ClipboardItem({
-            "image/png": blob,
-          }),
-        ])
-        console.log("[v0] Successfully copied to clipboard!")
-        alert(t.messages.copiedToClipboard)
-      } catch (clipboardErr) {
-        console.error("[v0] Clipboard write error:", clipboardErr)
-        // Fallback: try to download instead
-        alert(t.messages.clipboardError + " - " + (clipboardErr as Error).message)
-      }
+      await navigator.clipboard.write([
+        new ClipboardItem({
+          "image/png": blob,
+        }),
+      ])
+
+      console.log("[v0] Successfully copied to clipboard!")
+      alert(t.messages.copiedToClipboard)
     } catch (error) {
       console.error("[v0] Copy error:", error)
-      alert(t.messages.clipboardError + ": " + (error as Error).message)
+      alert(
+        t.messages.clipboardError ||
+          "Erreur lors de la copie dans le presse-papiers. Utilisez le bouton Télécharger PNG à la place.",
+      )
     }
   }
 

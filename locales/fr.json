@@ -82,15 +82,16 @@
     "errorCorrectionDescription": "Un niveau plus élevé permet au QR code de rester lisible même partiellement endommagé"
   },
   "errors": {
-    "downloadError": "Erreur lors du téléchargement du QR code",
-    "clipboardError": "Erreur lors de la copie dans le presse-papiers"
+    "downloadError": "Erreur lors du téléchargement du QR code"
   },
   "messages": {
-    "copiedToClipboard": "QR code copié dans le presse-papiers !"
+    "copiedToClipboard": "QR code copié dans le presse-papiers !",
+    "clipboardNotSupported": "Votre navigateur ne supporte pas la copie dans le presse-papiers. Utilisez le bouton Télécharger PNG à la place.",
+    "clipboardError": "Erreur lors de la copie dans le presse-papiers. Utilisez le bouton Télécharger PNG à la place."
   },
   "aria": {
-    "toggleTheme": "Toggle theme",
-    "logo": "QR Pro Logo",
+    "toggleTheme": "Changer le thème",
+    "logo": "Logo QR Pro",
     "french": "Français",
     "english": "English",
     "selectLanguage": "Sélectionner la langue"

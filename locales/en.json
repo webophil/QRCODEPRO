@@ -82,11 +82,12 @@
     "errorCorrectionDescription": "Higher levels allow the QR code to remain readable even if partially damaged"
   },
   "errors": {
-    "downloadError": "Error downloading QR code",
-    "clipboardError": "Error copying to clipboard"
+    "downloadError": "Error downloading QR code"
   },
   "messages": {
-    "copiedToClipboard": "QR code copied to clipboard!"
+    "copiedToClipboard": "QR code copied to clipboard!",
+    "clipboardNotSupported": "Your browser does not support clipboard copying. Use the Download PNG button instead.",
+    "clipboardError": "Error copying to clipboard. Use the Download PNG button instead."
   },
   "aria": {
     "toggleTheme": "Toggle theme",

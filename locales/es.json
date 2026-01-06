@@ -82,11 +82,12 @@
     "errorCorrectionDescription": "Un nivel más alto permite que el código QR permanezca legible incluso si está parcialmente dañado"
   },
   "errors": {
-    "downloadError": "Error al descargar el código QR",
-    "clipboardError": "Error al copiar al portapapeles"
+    "downloadError": "Error al descargar el código QR"
   },
   "messages": {
-    "copiedToClipboard": "¡Código QR copiado al portapapeles!"
+    "copiedToClipboard": "¡Código QR copiado al portapapeles!",
+    "clipboardNotSupported": "Su navegador no admite la copia al portapapeles. Utilice el botón Descargar PNG en su lugar.",
+    "clipboardError": "Error al copiar al portapapeles. Utilice el botón Descargar PNG en su lugar."
   },
   "aria": {
     "toggleTheme": "Cambiar tema",

@@ -54,6 +54,7 @@
     "generate": "Générer le QR Code",
     "downloadPNG": "Télécharger en PNG",
     "downloadSVG": "Télécharger en SVG",
+    "copyToClipboard": "Copier dans le presse-papiers",
     "add": "Ajouter",
     "change": "Changer",
     "remove": "Supprimer"
@@ -81,7 +82,11 @@
     "errorCorrectionDescription": "Un niveau plus élevé permet au QR code de rester lisible même partiellement endommagé"
   },
   "errors": {
-    "downloadError": "Erreur lors du téléchargement du QR code"
+    "downloadError": "Erreur lors du téléchargement du QR code",
+    "clipboardError": "Erreur lors de la copie dans le presse-papiers"
+  },
+  "messages": {
+    "copiedToClipboard": "QR code copié dans le presse-papiers !"
   },
   "aria": {
     "toggleTheme": "Toggle theme",

@@ -54,6 +54,7 @@
     "generate": "Generar Código QR",
     "downloadPNG": "Descargar en PNG",
     "downloadSVG": "Descargar en SVG",
+    "copyToClipboard": "Copiar al portapapeles",
     "add": "Añadir",
     "change": "Cambiar",
     "remove": "Eliminar"
@@ -81,7 +82,11 @@
     "errorCorrectionDescription": "Un nivel más alto permite que el código QR permanezca legible incluso si está parcialmente dañado"
   },
   "errors": {
-    "downloadError": "Error al descargar el código QR"
+    "downloadError": "Error al descargar el código QR",
+    "clipboardError": "Error al copiar al portapapeles"
+  },
+  "messages": {
+    "copiedToClipboard": "¡Código QR copiado al portapapeles!"
   },
   "aria": {
     "toggleTheme": "Cambiar tema",

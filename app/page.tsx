@@ -11,7 +11,20 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Slider } from "@/components/ui/slider"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Textarea } from "@/components/ui/textarea"
-import { Download, Upload, Link2, FileText, Mail, MessageSquare, Wifi, User, Sun, Moon, Globe } from "lucide-react"
+import {
+  Download,
+  Upload,
+  Link2,
+  FileText,
+  Mail,
+  MessageSquare,
+  Wifi,
+  User,
+  Sun,
+  Moon,
+  Globe,
+  Copy,
+} from "lucide-react"
 import Image from "next/image"
 import { useLanguage } from "@/lib/i18n"
 
@@ -250,6 +263,119 @@ END:VCARD`
     a.download = `qrcode-${qrType}.svg`
     a.click()
     URL.revokeObjectURL(url)
+  }
+
+  const copyQRCodeToClipboard = async () => {
+    try {
+      const QRCode = (await import("qrcode")).default
+
+      // Create canvas with reasonable size limit
+      const canvasSize = Math.min(size, 2048) // Limit to prevent excessive memory usage
+      const canvas = document.createElement("canvas")
+      canvas.width = canvasSize
+      canvas.height = canvasSize
+      const ctx = canvas.getContext("2d", { willReadFrequently: true })
+      if (!ctx) return
+
+      // Generate QR code
+      await QRCode.toCanvas(canvas, generateQRData(), {
+        width: canvasSize,
+        margin: 1,
+        color: {
+          dark: color,
+          light: backgroundColor,
+        },
+        errorCorrectionLevel: errorCorrection as any,
+      })
+
+      // Apply rounded corners if needed
+      if (cornerStyle === "rounded") {
+        const imageData = ctx.getImageData(0, 0, canvasSize, canvasSize)
+        ctx.clearRect(0, 0, canvasSize, canvasSize)
+
+        const radius = Math.floor(canvasSize * 0.05)
+        ctx.beginPath()
+        ctx.moveTo(radius, 0)
+        ctx.lineTo(canvasSize - radius, 0)
+        ctx.quadraticCurveTo(canvasSize, 0, canvasSize, radius)
+        ctx.lineTo(canvasSize, canvasSize - radius)
+        ctx.quadraticCurveTo(canvasSize, canvasSize, canvasSize - radius, canvasSize)
+        ctx.lineTo(radius, canvasSize)
+        ctx.quadraticCurveTo(0, canvasSize, 0, canvasSize - radius)
+        ctx.lineTo(0, radius)
+        ctx.quadraticCurveTo(0, 0, radius, 0)
+        ctx.closePath()
+        ctx.clip()
+
+        ctx.putImageData(imageData, 0, 0)
+      }
+
+      // Add logo if present
+      if (logo) {
+        await new Promise<void>((resolve, reject) => {
+          const logoImg = new Image()
+
+          logoImg.onload = () => {
+            try {
+              const actualLogoSize = canvasSize * (logoSize / 100)
+              const logoX = (canvasSize - actualLogoSize) / 2
+              const logoY = (canvasSize - actualLogoSize) / 2
+              const padding = Math.floor(actualLogoSize * 0.1)
+
+              // Draw white background for logo
+              ctx.fillStyle = "white"
+              ctx.shadowColor = "rgba(0, 0, 0, 0.3)"
+              ctx.shadowBlur = 8
+              ctx.fillRect(logoX - padding, logoY - padding, actualLogoSize + padding * 2, actualLogoSize + padding * 2)
+
+              // Reset shadow
+              ctx.shadowColor = "transparent"
+              ctx.shadowBlur = 0
+
+              // Draw logo
+              ctx.drawImage(logoImg, logoX, logoY, actualLogoSize, actualLogoSize)
+              resolve()
+            } catch (err) {
+              reject(err)
+            }
+          }
+
+          logoImg.onerror = () => reject(new Error("Unable to load logo"))
+
+          if (!logo.startsWith("blob:") && !logo.startsWith("data:")) {
+            logoImg.crossOrigin = "anonymous"
+          }
+
+          logoImg.src = logo
+        })
+      }
+
+      // Convert to blob and copy to clipboard
+      canvas.toBlob(
+        async (blob) => {
+          if (!blob) {
+            throw new Error("Unable to create PNG image")
+          }
+
+          try {
+            await navigator.clipboard.write([
+              new ClipboardItem({
+                "image/png": blob,
+              }),
+            ])
+            alert(t.messages.copiedToClipboard)
+          } catch (err) {
+            console.error("Clipboard error:", err)
+            alert(t.messages.clipboardError)
+          }
+        },
+        "image/png",
+        0.95,
+      ) // Add quality parameter
+    } catch (error) {
+      console.error("Copy error:", error)
+      alert(t.messages.clipboardError)
+    }
   }
 
   const tabIcons = {
@@ -900,6 +1026,14 @@ END:VCARD`
                         >
                           <Download className="w-5 h-5 mr-2" />
                           {t.buttons.downloadSVG}
+                        </Button>
+                        <Button
+                          onClick={copyQRCodeToClipboard}
+                          className="w-full bg-chart-3 hover:bg-chart-3/90 text-primary-foreground font-semibold"
+                          size="lg"
+                        >
+                          <Copy className="w-5 h-5 mr-2" />
+                          {t.buttons.copyToClipboard}
                         </Button>
                       </div>
                     )}

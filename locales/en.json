@@ -54,6 +54,7 @@
     "generate": "Generate QR Code",
     "downloadPNG": "Download as PNG",
     "downloadSVG": "Download as SVG",
+    "copyToClipboard": "Copy to Clipboard",
     "add": "Add",
     "change": "Change",
     "remove": "Remove"
@@ -81,7 +82,11 @@
     "errorCorrectionDescription": "Higher levels allow the QR code to remain readable even if partially damaged"
   },
   "errors": {
-    "downloadError": "Error downloading QR code"
+    "downloadError": "Error downloading QR code",
+    "clipboardError": "Error copying to clipboard"
+  },
+  "messages": {
+    "copiedToClipboard": "QR code copied to clipboard!"
   },
   "aria": {
     "toggleTheme": "Toggle theme",

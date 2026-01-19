@@ -1043,10 +1043,7 @@ END:VCARD`
                             <Download className="w-4 h-4 mr-2" />
                             {t.buttons.downloadSVG}
                           </Button>
-                          <Button onClick={copyQRCodeToClipboard} variant="outline">
-                            <Copy className="w-4 h-4 mr-2" />
-                            {t.buttons.copyToClipboard}
-                          </Button>
+                          
                         </div>
                       </div>
                     )}

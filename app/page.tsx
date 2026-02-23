@@ -920,7 +920,7 @@ END:VCARD`
         <p>
           {"QR Pro - "}
           {t.footer.developedWith}{" "}
-          <a href="https://v0.app" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+          <a href="https://v0.app/ref/C89KMM" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
             v0.app
           </a>{" "}
           {t.footer.by}{" "}

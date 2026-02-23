@@ -98,5 +98,9 @@
     "fr": "Français",
     "en": "English",
     "es": "Español"
+  },
+  "footer": {
+    "developedWith": "developed with",
+    "by": "by"
   }
 }

@@ -100,5 +100,9 @@
     "fr": "Français",
     "en": "English",
     "es": "Español"
+  },
+  "footer": {
+    "developedWith": "développé avec",
+    "by": "par"
   }
 }

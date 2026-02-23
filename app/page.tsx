@@ -48,7 +48,7 @@ export default function QRCodeGenerator() {
   }
 
   const [qrType, setQRType] = useState<QRType>("url")
-  const [qrData, setQRData] = useState("https://ahoikapptn.com")
+  const [qrData, setQRData] = useState("https://phildev.fr")
   const [color, setColor] = useState("#6366f1")
   const [backgroundColor, setBackgroundColor] = useState("#ffffff")
   const [size, setSize] = useState(256)
@@ -57,7 +57,7 @@ export default function QRCodeGenerator() {
   const [logo, setLogo] = useState<string | null>(null)
   const [logoSize, setLogoSize] = useState(20)
 
-  const [urlValue, setUrlValue] = useState("https://ahoikapptn.com")
+  const [urlValue, setUrlValue] = useState("https://phildev.fr")
   const [textValue, setTextValue] = useState("")
   const [email, setEmail] = useState({ address: "", subject: "", body: "" })
   const [sms, setSms] = useState({ phone: "", message: "" })
@@ -915,6 +915,20 @@ END:VCARD`
           </div>
         </div>
       </div>
+
+      <footer className="text-center py-4 text-sm text-muted-foreground border-t border-border bg-background/80 backdrop-blur-sm">
+        <p>
+          {"QR Pro - "}
+          {t.footer.developedWith}{" "}
+          <a href="https://v0.app" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
+            v0.app
+          </a>{" "}
+          {t.footer.by}{" "}
+          <a href="https://phildev.fr" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-semibold">
+            PhilDEV.fr
+          </a>
+        </p>
+      </footer>
     </div>
   )
 }

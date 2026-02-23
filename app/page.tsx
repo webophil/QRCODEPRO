@@ -1030,20 +1030,41 @@ END:VCARD`
                                 position: "relative",
                               }}
                             >
-                              <QRCodeSVG value={qrData} size={size} fgColor={color} bgColor={backgroundColor} />
+                              <QRCodeSVG
+                                value={qrData}
+                                size={size}
+                                fgColor={color}
+                                bgColor={backgroundColor}
+                                level={errorCorrection}
+                                {...(logo
+                                  ? {
+                                      imageSettings: {
+                                        src: logo,
+                                        x: undefined,
+                                        y: undefined,
+                                        height: size * (logoSize / 100),
+                                        width: size * (logoSize / 100),
+                                        excavate: true,
+                                      },
+                                    }
+                                  : {})}
+                              />
                             </div>
                           </div>
                         </div>
-                        <div className="flex gap-4">
-                          <Button onClick={downloadQRCode} variant="outline">
+                        <div className="flex flex-col gap-3">
+                          <Button onClick={downloadQRCode} variant="outline" className="w-full bg-transparent">
                             <Download className="w-4 h-4 mr-2" />
                             {t.buttons.downloadPNG}
                           </Button>
-                          <Button onClick={downloadQRCodeSVG} variant="outline">
+                          <Button onClick={downloadQRCodeSVG} variant="outline" className="w-full bg-transparent">
                             <Download className="w-4 h-4 mr-2" />
                             {t.buttons.downloadSVG}
                           </Button>
-                          
+                          <Button onClick={copyQRCodeToClipboard} variant="outline" className="w-full bg-transparent">
+                            <Copy className="w-4 h-4 mr-2" />
+                            {t.buttons.copyToClipboard}
+                          </Button>
                         </div>
                       </div>
                     )}

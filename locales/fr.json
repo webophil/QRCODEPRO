@@ -104,5 +104,22 @@
   "footer": {
     "developedWith": "développé avec",
     "by": "par"
+  },
+  "frames": {
+    "frameLabel": "Cadre décoratif",
+    "frameTextLabel": "Texte du cadre",
+    "none": "Aucun cadre",
+    "comic": "Bulle BD",
+    "restaurant": "Restaurant",
+    "bar": "Bar / Cocktails",
+    "hairdresser": "Salon de coiffure",
+    "event": "Evenement"
+  },
+  "frameDefaults": {
+    "comic": "Scannez-moi !",
+    "restaurant": "Au Menu",
+    "bar": "Nos Cocktails",
+    "hairdresser": "Prendre RDV",
+    "event": "Infos Evenement"
   }
 }

@@ -24,7 +24,7 @@ import {
   Moon,
   Globe,
 } from "lucide-react"
-import Image from "next/image"
+import NextImage from "next/image"
 import { useLanguage } from "@/lib/i18n"
 
 type QRType = "url" | "text" | "email" | "sms" | "wifi" | "vcard"
@@ -307,7 +307,7 @@ END:VCARD`
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-3 hover:opacity-80 transition-opacity">
               <div className="relative w-12 h-12 rounded-lg overflow-hidden shadow-md">
-                <Image src="/images/qr-logo.png" alt={t.aria.logo} width={48} height={48} className="object-cover" />
+                <NextImage src="/images/qr-logo.png" alt={t.aria.logo} width={48} height={48} className="object-cover" />
               </div>
               <span className="font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent text-5xl">
                 {t.appName}
@@ -337,7 +337,7 @@ END:VCARD`
                 <SelectContent>
                   <SelectItem value="fr">
                     <div className="flex items-center gap-2">
-                      <Image
+                      <NextImage
                         src="/french-flag.png"
                         alt="Français"
                         width={20}
@@ -349,7 +349,7 @@ END:VCARD`
                   </SelectItem>
                   <SelectItem value="en">
                     <div className="flex items-center gap-2">
-                      <Image
+                      <NextImage
                         src="/uk-flag.png"
                         alt="English"
                         width={20}
@@ -361,7 +361,7 @@ END:VCARD`
                   </SelectItem>
                   <SelectItem value="es">
                     <div className="flex items-center gap-2">
-                      <Image
+                      <NextImage
                         src="/spanish-flag.jpg"
                         alt="Espanol"
                         width={20}

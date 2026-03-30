@@ -130,15 +130,24 @@ END:VCARD`
 
   const downloadQRCode = async () => {
     try {
+      console.log("[v0] Starting PNG download...")
       const QRCode = (await import("qrcode")).default
+      console.log("[v0] QRCode library loaded")
 
       const canvas = document.createElement("canvas")
       canvas.width = size
       canvas.height = size
       const ctx = canvas.getContext("2d")
-      if (!ctx) return
+      if (!ctx) {
+        console.log("[v0] Failed to get canvas context")
+        return
+      }
+      console.log("[v0] Canvas created, size:", size)
 
-      await QRCode.toCanvas(canvas, generateQRData(), {
+      const qrDataToEncode = generateQRData()
+      console.log("[v0] QR data to encode:", qrDataToEncode.substring(0, 50) + "...")
+      
+      await QRCode.toCanvas(canvas, qrDataToEncode, {
         width: size,
         margin: 1,
         color: {
@@ -147,6 +156,7 @@ END:VCARD`
         },
         errorCorrectionLevel: errorCorrection as any,
       })
+      console.log("[v0] QR code rendered to canvas")
 
       if (cornerStyle === "rounded") {
         const tempCanvas = document.createElement("canvas")
@@ -213,10 +223,14 @@ END:VCARD`
         })
       }
 
+      console.log("[v0] Creating blob...")
       canvas.toBlob((blob) => {
         if (!blob) {
-          throw new Error("Unable to create PNG image")
+          console.log("[v0] Blob creation failed")
+          alert(t.errors.downloadError)
+          return
         }
+        console.log("[v0] Blob created, size:", blob.size)
         const url = URL.createObjectURL(blob)
         const link = document.createElement("a")
         link.href = url
@@ -225,8 +239,10 @@ END:VCARD`
         link.click()
         document.body.removeChild(link)
         URL.revokeObjectURL(url)
+        console.log("[v0] Download triggered successfully")
       }, "image/png")
     } catch (error) {
+      console.error("[v0] Download error:", error)
       alert(t.errors.downloadError)
     }
   }

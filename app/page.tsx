@@ -74,6 +74,7 @@ export default function QRCodeGenerator() {
   })
 
   const qrRef = useRef<HTMLDivElement>(null)
+  const frameRef = useRef<HTMLDivElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleFrameStyleChange = (value: string) => {
@@ -130,22 +131,42 @@ END:VCARD`
 
   const downloadQRCode = async () => {
     try {
-      console.log("[v0] Starting PNG download...")
+      // If a frame is selected, use html2canvas to capture the entire frame
+      if (frameStyle !== "none" && frameRef.current) {
+        const html2canvas = (await import("html2canvas")).default
+        const canvas = await html2canvas(frameRef.current, {
+          backgroundColor: null,
+          scale: 2,
+          useCORS: true,
+        })
+        
+        canvas.toBlob((blob) => {
+          if (!blob) {
+            alert(t.errors.downloadError)
+            return
+          }
+          const url = URL.createObjectURL(blob)
+          const link = document.createElement("a")
+          link.href = url
+          link.download = `qrcode-${qrType}-${frameStyle}.png`
+          document.body.appendChild(link)
+          link.click()
+          document.body.removeChild(link)
+          URL.revokeObjectURL(url)
+        }, "image/png")
+        return
+      }
+
+      // Otherwise, generate QR code only (no frame)
       const QRCode = (await import("qrcode")).default
-      console.log("[v0] QRCode library loaded")
 
       const canvas = document.createElement("canvas")
       canvas.width = size
       canvas.height = size
       const ctx = canvas.getContext("2d")
-      if (!ctx) {
-        console.log("[v0] Failed to get canvas context")
-        return
-      }
-      console.log("[v0] Canvas created, size:", size)
+      if (!ctx) return
 
       const qrDataToEncode = generateQRData()
-      console.log("[v0] QR data to encode:", qrDataToEncode.substring(0, 50) + "...")
       
       await QRCode.toCanvas(canvas, qrDataToEncode, {
         width: size,
@@ -156,7 +177,6 @@ END:VCARD`
         },
         errorCorrectionLevel: errorCorrection as any,
       })
-      console.log("[v0] QR code rendered to canvas")
 
       if (cornerStyle === "rounded") {
         const tempCanvas = document.createElement("canvas")
@@ -211,7 +231,7 @@ END:VCARD`
             }
           }
 
-          logoImg.onerror = (err) => {
+          logoImg.onerror = () => {
             reject(new Error("Unable to load logo"))
           }
 
@@ -223,14 +243,11 @@ END:VCARD`
         })
       }
 
-      console.log("[v0] Creating blob...")
       canvas.toBlob((blob) => {
         if (!blob) {
-          console.log("[v0] Blob creation failed")
           alert(t.errors.downloadError)
           return
         }
-        console.log("[v0] Blob created, size:", blob.size)
         const url = URL.createObjectURL(blob)
         const link = document.createElement("a")
         link.href = url
@@ -239,10 +256,9 @@ END:VCARD`
         link.click()
         document.body.removeChild(link)
         URL.revokeObjectURL(url)
-        console.log("[v0] Download triggered successfully")
       }, "image/png")
     } catch (error) {
-      console.error("[v0] Download error:", error)
+      console.error("Download error:", error)
       alert(t.errors.downloadError)
     }
   }
@@ -917,7 +933,7 @@ END:VCARD`
                         <div className="relative">
                           {/* Frame: Comic Bubble */}
                           {frameStyle === "comic" && (
-                            <div className="relative">
+                            <div className="relative" ref={frameRef}>
                               <div
                                 className="bg-white rounded-3xl shadow-xl px-8 pt-6 pb-10 border-2 border-foreground/20"
                                 style={{ minWidth: size + 60 }}
@@ -946,6 +962,7 @@ END:VCARD`
                           {/* Frame: Restaurant */}
                           {frameStyle === "restaurant" && (
                             <div
+                              ref={frameRef}
                               className="relative shadow-xl"
                               style={{ minWidth: size + 60, background: "#f5e6c8", border: "6px double #8B4513", borderRadius: "8px", padding: "16px" }}
                             >
@@ -975,6 +992,7 @@ END:VCARD`
                           {/* Frame: Bar */}
                           {frameStyle === "bar" && (
                             <div
+                              ref={frameRef}
                               className="relative shadow-xl"
                               style={{ minWidth: size + 60, background: "#2d2d2d", border: "4px solid #6b4226", borderRadius: "6px", padding: "16px" }}
                             >
@@ -1000,6 +1018,7 @@ END:VCARD`
                           {/* Frame: Hairdresser */}
                           {frameStyle === "hairdresser" && (
                             <div
+                              ref={frameRef}
                               className="relative shadow-xl"
                               style={{ minWidth: size + 60, background: "linear-gradient(135deg, #fff5f9, #fce4ec)", border: "2px solid #c9a86c", borderRadius: "12px", padding: "16px" }}
                             >
@@ -1025,6 +1044,7 @@ END:VCARD`
                           {/* Frame: Event */}
                           {frameStyle === "event" && (
                             <div
+                              ref={frameRef}
                               className="relative shadow-xl"
                               style={{ minWidth: size + 60, background: "#ffffff", border: "3px dashed #1a237e", borderRadius: "4px", padding: "16px" }}
                             >

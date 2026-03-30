@@ -102,5 +102,22 @@
   "footer": {
     "developedWith": "developed with",
     "by": "by"
+  },
+  "frames": {
+    "frameLabel": "Decorative Frame",
+    "frameTextLabel": "Frame Text",
+    "none": "No frame",
+    "comic": "Comic Bubble",
+    "restaurant": "Restaurant",
+    "bar": "Bar / Cocktails",
+    "hairdresser": "Hair Salon",
+    "event": "Event"
+  },
+  "frameDefaults": {
+    "comic": "Scan me!",
+    "restaurant": "On the Menu",
+    "bar": "Our Cocktails",
+    "hairdresser": "Book Now",
+    "event": "Event Info"
   }
 }

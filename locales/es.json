@@ -102,5 +102,22 @@
   "footer": {
     "developedWith": "desarrollado con",
     "by": "por"
+  },
+  "frames": {
+    "frameLabel": "Marco decorativo",
+    "frameTextLabel": "Texto del marco",
+    "none": "Sin marco",
+    "comic": "Burbuja comic",
+    "restaurant": "Restaurante",
+    "bar": "Bar / Cocteles",
+    "hairdresser": "Peluqueria",
+    "event": "Evento"
+  },
+  "frameDefaults": {
+    "comic": "Escanéame!",
+    "restaurant": "En el Menu",
+    "bar": "Nuestros Cocteles",
+    "hairdresser": "Reservar Cita",
+    "event": "Info del Evento"
   }
 }

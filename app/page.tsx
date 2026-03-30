@@ -56,6 +56,8 @@ export default function QRCodeGenerator() {
   const [cornerStyle, setCornerStyle] = useState<"square" | "rounded">("square")
   const [logo, setLogo] = useState<string | null>(null)
   const [logoSize, setLogoSize] = useState(20)
+  const [frameStyle, setFrameStyle] = useState("none")
+  const [frameText, setFrameText] = useState("")
 
   const [urlValue, setUrlValue] = useState("https://phildev.fr")
   const [textValue, setTextValue] = useState("")
@@ -73,6 +75,15 @@ export default function QRCodeGenerator() {
 
   const qrRef = useRef<HTMLDivElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
+
+  const handleFrameStyleChange = (value: string) => {
+    setFrameStyle(value)
+    if (value !== "none" && t.frameDefaults?.[value as keyof typeof t.frameDefaults]) {
+      setFrameText(t.frameDefaults[value as keyof typeof t.frameDefaults])
+    } else {
+      setFrameText("")
+    }
+  }
 
   const generateQRData = (): string => {
     switch (qrType) {
@@ -673,11 +684,12 @@ END:VCARD`
                   </CardHeader>
                   <CardContent className="p-6 space-y-6">
                     <Tabs defaultValue="colors" className="w-full">
-                      <TabsList className="grid w-full grid-cols-4 mb-6">
+                      <TabsList className="grid w-full grid-cols-5 mb-6">
                         <TabsTrigger value="colors">{t.customizationTabs.colors}</TabsTrigger>
                         <TabsTrigger value="style">{t.customizationTabs.style}</TabsTrigger>
                         <TabsTrigger value="logo">{t.customizationTabs.logo}</TabsTrigger>
                         <TabsTrigger value="error">{t.customizationTabs.error}</TabsTrigger>
+                        <TabsTrigger value="frame">{t.frames?.frameLabel || "Cadre"}</TabsTrigger>
                       </TabsList>
 
                       <TabsContent value="colors" className="space-y-6">
@@ -837,6 +849,40 @@ END:VCARD`
                           </p>
                         </div>
                       </TabsContent>
+
+                      <TabsContent value="frame" className="space-y-6">
+                        <div>
+                          <Label htmlFor="frameStyle" className="text-foreground font-semibold">
+                            {t.frames?.frameLabel || "Cadre"}
+                          </Label>
+                          <Select value={frameStyle} onValueChange={handleFrameStyleChange}>
+                            <SelectTrigger id="frameStyle" className="mt-2">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="none">{t.frames?.none || "Aucun"}</SelectItem>
+                              <SelectItem value="comic">{t.frames?.comic || "Bulle BD"}</SelectItem>
+                              <SelectItem value="restaurant">{t.frames?.restaurant || "Restaurant"}</SelectItem>
+                              <SelectItem value="bar">{t.frames?.bar || "Bar"}</SelectItem>
+                              <SelectItem value="hairdresser">{t.frames?.hairdresser || "Coiffeur"}</SelectItem>
+                              <SelectItem value="event">{t.frames?.event || "Evenement"}</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                        {frameStyle !== "none" && (
+                          <div>
+                            <Label htmlFor="frameText" className="text-foreground font-semibold">
+                              {t.frames?.frameTextLabel || "Texte du cadre"}
+                            </Label>
+                            <Input
+                              id="frameText"
+                              value={frameText}
+                              onChange={(e) => setFrameText(e.target.value)}
+                              className="mt-2"
+                            />
+                          </div>
+                        )}
+                      </TabsContent>
                     </Tabs>
                   </CardContent>
                 </div>
@@ -853,42 +899,179 @@ END:VCARD`
                     {qrData && (
                       <div className="flex flex-col items-center gap-6">
                         <div className="relative">
-                          <div
-                            ref={qrRef}
-                            className="p-6 bg-muted shadow-lg"
-                            style={{
-                              borderRadius: cornerStyle === "rounded" ? "24px" : "12px",
-                              transition: "border-radius 0.3s ease",
-                            }}
-                          >
-                            <div
-                              style={{
-                                borderRadius: cornerStyle === "rounded" ? "16px" : "0px",
-                                overflow: "hidden",
-                                position: "relative",
-                              }}
-                            >
-                              <QRCodeSVG
-                                value={qrData}
-                                size={size}
-                                fgColor={color}
-                                bgColor={backgroundColor}
-                                level={errorCorrection}
-                                {...(logo
-                                  ? {
-                                      imageSettings: {
-                                        src: logo,
-                                        x: undefined,
-                                        y: undefined,
-                                        height: size * (logoSize / 100),
-                                        width: size * (logoSize / 100),
-                                        excavate: true,
-                                      },
-                                    }
-                                  : {})}
+                          {/* Frame: Comic Bubble */}
+                          {frameStyle === "comic" && (
+                            <div className="relative">
+                              <div
+                                className="bg-white rounded-3xl shadow-xl px-8 pt-6 pb-10 border-2 border-foreground/20"
+                                style={{ minWidth: size + 60 }}
+                              >
+                                <p className="text-center font-bold text-lg text-foreground mb-4" style={{ fontFamily: "Comic Sans MS, cursive" }}>
+                                  {frameText}
+                                </p>
+                                <div className="flex justify-center">
+                                  <div
+                                    ref={qrRef}
+                                    style={{ borderRadius: cornerStyle === "rounded" ? "16px" : "0px", overflow: "hidden" }}
+                                  >
+                                    <QRCodeSVG value={qrData} size={size} fgColor={color} bgColor={backgroundColor} level={errorCorrection}
+                                      {...(logo ? { imageSettings: { src: logo, x: undefined, y: undefined, height: size * (logoSize / 100), width: size * (logoSize / 100), excavate: true } } : {})}
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                              <div
+                                className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-0 h-0"
+                                style={{ borderLeft: "15px solid transparent", borderRight: "15px solid transparent", borderTop: "20px solid white", filter: "drop-shadow(0 2px 2px rgba(0,0,0,0.1))" }}
                               />
                             </div>
-                          </div>
+                          )}
+
+                          {/* Frame: Restaurant */}
+                          {frameStyle === "restaurant" && (
+                            <div
+                              className="relative shadow-xl"
+                              style={{ minWidth: size + 60, background: "#f5e6c8", border: "6px double #8B4513", borderRadius: "8px", padding: "16px" }}
+                            >
+                              <div className="text-center mb-3" style={{ borderBottom: "2px solid #8B4513", paddingBottom: "8px" }}>
+                                <p className="text-xl font-bold" style={{ fontFamily: "Georgia, serif", color: "#8B4513", fontStyle: "italic" }}>
+                                  {frameText}
+                                </p>
+                              </div>
+                              <div className="flex justify-center">
+                                <div
+                                  ref={qrRef}
+                                  style={{ borderRadius: cornerStyle === "rounded" ? "16px" : "0px", overflow: "hidden" }}
+                                >
+                                  <QRCodeSVG value={qrData} size={size} fgColor={color} bgColor={backgroundColor} level={errorCorrection}
+                                    {...(logo ? { imageSettings: { src: logo, x: undefined, y: undefined, height: size * (logoSize / 100), width: size * (logoSize / 100), excavate: true } } : {})}
+                                  />
+                                </div>
+                              </div>
+                              <div className="flex justify-center mt-2 gap-1">
+                                <span style={{ color: "#8B4513" }}>&#10022;</span>
+                                <span style={{ color: "#8B4513" }}>&#10022;</span>
+                                <span style={{ color: "#8B4513" }}>&#10022;</span>
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Frame: Bar */}
+                          {frameStyle === "bar" && (
+                            <div
+                              className="relative shadow-xl"
+                              style={{ minWidth: size + 60, background: "#2d2d2d", border: "4px solid #6b4226", borderRadius: "6px", padding: "16px" }}
+                            >
+                              <p className="text-center text-xl font-bold mb-3" style={{ fontFamily: "'Courier New', monospace", color: "#e8e0d0", letterSpacing: "2px" }}>
+                                {frameText}
+                              </p>
+                              <div className="flex justify-center">
+                                <div
+                                  ref={qrRef}
+                                  style={{ borderRadius: cornerStyle === "rounded" ? "16px" : "0px", overflow: "hidden" }}
+                                >
+                                  <QRCodeSVG value={qrData} size={size} fgColor={color} bgColor={backgroundColor} level={errorCorrection}
+                                    {...(logo ? { imageSettings: { src: logo, x: undefined, y: undefined, height: size * (logoSize / 100), width: size * (logoSize / 100), excavate: true } } : {})}
+                                  />
+                                </div>
+                              </div>
+                              <div className="mt-3 border-t pt-2" style={{ borderColor: "#6b4226" }}>
+                                <p className="text-center text-xs" style={{ color: "#8a7d6b" }}>&#127863; &#127862; &#127864;</p>
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Frame: Hairdresser */}
+                          {frameStyle === "hairdresser" && (
+                            <div
+                              className="relative shadow-xl"
+                              style={{ minWidth: size + 60, background: "linear-gradient(135deg, #fff5f9, #fce4ec)", border: "2px solid #c9a86c", borderRadius: "12px", padding: "16px" }}
+                            >
+                              <p className="text-center text-xl mb-3" style={{ fontFamily: "'Georgia', serif", color: "#c9a86c", fontStyle: "italic", fontWeight: "600" }}>
+                                {frameText}
+                              </p>
+                              <div className="flex justify-center">
+                                <div
+                                  ref={qrRef}
+                                  style={{ borderRadius: cornerStyle === "rounded" ? "16px" : "0px", overflow: "hidden" }}
+                                >
+                                  <QRCodeSVG value={qrData} size={size} fgColor={color} bgColor={backgroundColor} level={errorCorrection}
+                                    {...(logo ? { imageSettings: { src: logo, x: undefined, y: undefined, height: size * (logoSize / 100), width: size * (logoSize / 100), excavate: true } } : {})}
+                                  />
+                                </div>
+                              </div>
+                              <div className="mt-2 text-center" style={{ color: "#c9a86c" }}>
+                                <span>&#9988; &#9733; &#9988;</span>
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Frame: Event */}
+                          {frameStyle === "event" && (
+                            <div
+                              className="relative shadow-xl"
+                              style={{ minWidth: size + 60, background: "#ffffff", border: "3px dashed #1a237e", borderRadius: "4px", padding: "16px" }}
+                            >
+                              <div className="text-center mb-3" style={{ background: "#1a237e", margin: "-16px -16px 12px -16px", padding: "10px", borderRadius: "1px 1px 0 0" }}>
+                                <p className="text-lg font-bold tracking-widest uppercase" style={{ color: "#ffffff" }}>
+                                  {frameText}
+                                </p>
+                              </div>
+                              <div className="flex justify-center">
+                                <div
+                                  ref={qrRef}
+                                  style={{ borderRadius: cornerStyle === "rounded" ? "16px" : "0px", overflow: "hidden" }}
+                                >
+                                  <QRCodeSVG value={qrData} size={size} fgColor={color} bgColor={backgroundColor} level={errorCorrection}
+                                    {...(logo ? { imageSettings: { src: logo, x: undefined, y: undefined, height: size * (logoSize / 100), width: size * (logoSize / 100), excavate: true } } : {})}
+                                  />
+                                </div>
+                              </div>
+                              <div className="mt-3 text-center">
+                                <p className="text-xs font-mono" style={{ color: "#1a237e" }}>&#9733; &#9733; &#9733;</p>
+                              </div>
+                            </div>
+                          )}
+
+                          {/* No Frame (default) */}
+                          {frameStyle === "none" && (
+                            <div
+                              ref={qrRef}
+                              className="p-6 bg-muted shadow-lg"
+                              style={{
+                                borderRadius: cornerStyle === "rounded" ? "24px" : "12px",
+                                transition: "border-radius 0.3s ease",
+                              }}
+                            >
+                              <div
+                                style={{
+                                  borderRadius: cornerStyle === "rounded" ? "16px" : "0px",
+                                  overflow: "hidden",
+                                  position: "relative",
+                                }}
+                              >
+                                <QRCodeSVG
+                                  value={qrData}
+                                  size={size}
+                                  fgColor={color}
+                                  bgColor={backgroundColor}
+                                  level={errorCorrection}
+                                  {...(logo
+                                    ? {
+                                        imageSettings: {
+                                          src: logo,
+                                          x: undefined,
+                                          y: undefined,
+                                          height: size * (logoSize / 100),
+                                          width: size * (logoSize / 100),
+                                          excavate: true,
+                                        },
+                                      }
+                                    : {})}
+                                />
+                              </div>
+                            </div>
+                          )}
                         </div>
                         <div className="flex flex-col gap-3">
                           <Button
